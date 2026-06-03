@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 World Cup Predictions</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --gold: #f0b429;
+    --gold2: #ffd700;
+    --green: #10b981;
+    --blue: #3b82f6;
+    --draw: #8b5cf6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    background-image: radial-gradient(ellipse at 20% 50%, rgba(240,180,41,0.04) 0%, transparent 60%),
+                      radial-gradient(ellipse at 80% 20%, rgba(59,130,246,0.05) 0%, transparent 50%);
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 40px,
+      rgba(240,180,41,0.015) 40px, rgba(240,180,41,0.015) 80px
+    );
+  }
+
+  .header-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 0%, var(--gold) 50%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-sub {
+    margin-top: 0.75rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  .model-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.3rem 1rem;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .group-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .group-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .group-card:nth-child(1) { animation-delay: 0.05s; }
+  .group-card:nth-child(2) { animation-delay: 0.1s; }
+  .group-card:nth-child(3) { animation-delay: 0.15s; }
+  .group-card:nth-child(4) { animation-delay: 0.2s; }
+  .group-card:nth-child(5) { animation-delay: 0.25s; }
+  .group-card:nth-child(6) { animation-delay: 0.3s; }
+
+  .group-header {
+    background: linear-gradient(135deg, var(--surface2), var(--border));
+    padding: 0.9rem 1.25rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .group-body {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 0;
+  }
+
+  .standings-section {
+    padding: 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .fixtures-section {
+    padding: 1rem;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .standings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .standings-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .standings-table th {
+    text-align: center;
+    padding: 0.35rem 0.25rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .standings-table th:nth-child(2) { text-align: left; }
+
+  .standings-table td {
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .standings-table td.team-name { text-align: left; font-weight: 500; font-size: 0.8rem; }
+  .standings-table td.pos { color: var(--muted); font-size: 0.75rem; }
+  .standings-table td.pts { font-weight: 700; color: var(--gold); }
+
+  .standings-table tr.advancing {
+    background: rgba(16, 185, 129, 0.06);
+  }
+
+  .standings-table tr.advancing td.team-name {
+    color: var(--green);
+  }
+
+  .badge {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 0.1rem 0.4rem;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 4px;
+    font-size: 0.55rem;
+    color: var(--green);
+    letter-spacing: 0.08em;
+    vertical-align: middle;
+    font-weight: 700;
+  }
+
+  .fixture {
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .fixture:last-child { border-bottom: none; }
+
+  .fixture-date {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+
+  .fixture-teams {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .team { font-size: 0.82rem; font-weight: 400; color: var(--text); flex: 1; }
+  .team:last-child { text-align: right; }
+  .team.bold { font-weight: 700; color: #fff; }
+  .vs { font-size: 0.65rem; color: var(--muted); flex-shrink: 0; }
+
+  .prob-bars {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.3rem;
+    align-items: center;
+  }
+
+  .bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .draw-group { align-items: center; padding: 0 0.25rem; }
+
+  .bar-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .bar-label.bold { color: #fff; font-weight: 700; }
+
+  .bar-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar { height: 100%; border-radius: 2px; transition: width 1s ease; }
+  .home-bar { background: var(--blue); }
+  .draw-bar { background: var(--draw); }
+  .away-bar { background: var(--gold); margin-left: auto; }
+
+  .draw-group .bar-track { width: 100%; }
+
+  .prediction-tag {
+    margin-top: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 700px) {
+    .groups-grid { grid-template-columns: 1fr; }
+    .group-body { grid-template-columns: 1fr; }
+    .standings-section { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-eyebrow">ML-Powered Tournament Analysis</div>
+  <h1>2026 World Cup Predictions</h1>
+  <div class="header-sub">Group Stage · XGBoost Model · Elo + Form Features</div>
+  <div class="model-tag">58.3% ACCURACY · 72 FIXTURES PREDICTED</div>
+</header>
+<div class="container">
+  <div class="groups-grid">
+    
+        <div class="group-card">
+            <div class="group-header">GROUP A</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Mexico<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>3</td><td>0</td><td>0</td>
+                <td class="pts">9</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">South Korea<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">South Africa</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Czechia</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-11</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Mexico</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">South Africa</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">65.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:65.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">22.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:22.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">11.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:11.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Mexico win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-11</div>
+                <div class="fixture-teams">
+                    <span class="team bold">South Korea</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Czechia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">78.4%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:78.4%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">17.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:17.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">3.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:3.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ South Korea win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-17</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Mexico</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">South Korea</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">37.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:37.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">35.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:35.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">27.2%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:27.2%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Mexico win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-17</div>
+                <div class="fixture-teams">
+                    <span class="team ">Czechia</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">South Africa</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">16.9%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:16.9%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">23.0%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:23.0%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">60.1%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:60.1%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ South Africa win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-24</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Mexico</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Czechia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">80.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:80.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">18.3%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:18.3%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">1.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:1.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Mexico win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-24</div>
+                <div class="fixture-teams">
+                    <span class="team bold">South Korea</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">South Africa</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">60.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:60.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">25.5%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:25.5%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">13.8%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:13.8%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ South Korea win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP B</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Switzerland<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>3</td><td>0</td><td>0</td>
+                <td class="pts">9</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Canada<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Bosnia and Herzegovina</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Qatar</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-12</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Canada</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Bosnia and Herzegovina</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">60.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:60.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">27.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:27.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">12.2%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:12.2%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Canada win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-13</div>
+                <div class="fixture-teams">
+                    <span class="team ">Qatar</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Switzerland</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">15.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:15.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">23.7%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:23.7%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">60.8%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:60.8%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Switzerland win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-19</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Canada</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Qatar</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">64.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:64.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">26.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:26.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">9.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:9.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Canada win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-19</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Switzerland</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Bosnia and Herzegovina</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">62.4%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:62.4%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">24.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:24.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">12.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:12.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Switzerland win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-25</div>
+                <div class="fixture-teams">
+                    <span class="team ">Canada</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Switzerland</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">30.6%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:30.6%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">33.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:33.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">35.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:35.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Switzerland win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-25</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Bosnia and Herzegovina</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Qatar</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">41.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:41.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">30.5%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:30.5%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">27.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:27.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Bosnia and Herzegovina win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP C</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Morocco<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Brazil<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>2</td><td>0</td>
+                <td class="pts">5</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Scotland</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Haiti</td>
+                <td>3</td><td>0</td><td>1</td><td>2</td>
+                <td class="pts">1</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-13</div>
+                <div class="fixture-teams">
+                    <span class="team ">Brazil</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Morocco</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">32.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:32.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">35.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:35.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">32.0%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:32.0%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-13</div>
+                <div class="fixture-teams">
+                    <span class="team ">Haiti</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Scotland</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">18.6%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:18.6%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">30.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:30.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">50.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:50.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Scotland win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-20</div>
+                <div class="fixture-teams">
+                    <span class="team ">Scotland</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Morocco</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">17.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:17.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">31.2%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:31.2%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">51.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:51.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Morocco win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-20</div>
+                <div class="fixture-teams">
+                    <span class="team ">Brazil</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Haiti</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">40.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:40.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">48.0%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:48.0%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">11.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:11.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-25</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Brazil</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Scotland</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">47.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:47.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">24.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:24.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">28.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:28.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Brazil win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-25</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Morocco</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Haiti</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">60.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:60.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">25.2%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:25.2%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">14.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:14.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Morocco win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP D</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Australia<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Paraguay<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">United States</td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Turkiye</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-12</div>
+                <div class="fixture-teams">
+                    <span class="team ">United States</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Paraguay</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">28.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:28.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">32.7%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:32.7%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">39.3%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:39.3%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Paraguay win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-13</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Australia</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Turkiye</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">73.9%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:73.9%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">24.9%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:24.9%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">1.2%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:1.2%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Australia win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-19</div>
+                <div class="fixture-teams">
+                    <span class="team ">United States</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Australia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">22.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:22.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">39.0%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:39.0%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">38.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:38.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-19</div>
+                <div class="fixture-teams">
+                    <span class="team ">Turkiye</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Paraguay</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">10.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:10.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">17.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:17.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">72.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:72.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Paraguay win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-25</div>
+                <div class="fixture-teams">
+                    <span class="team bold">United States</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Turkiye</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">68.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:68.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">23.3%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:23.3%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">8.2%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:8.2%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ United States win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-25</div>
+                <div class="fixture-teams">
+                    <span class="team ">Paraguay</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Australia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">27.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:27.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">28.5%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:28.5%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">44.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:44.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Australia win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP E</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Ecuador<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Germany<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Ivory Coast</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Curacao</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-14</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Germany</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Curacao</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">80.6%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:80.6%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">17.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:17.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">2.3%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:2.3%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Germany win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-14</div>
+                <div class="fixture-teams">
+                    <span class="team ">Ivory Coast</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Ecuador</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">15.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:15.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">18.2%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:18.2%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">66.8%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:66.8%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Ecuador win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-20</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Germany</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Ivory Coast</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">50.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:50.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">38.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:38.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">11.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:11.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Germany win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-20</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Ecuador</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Curacao</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">76.3%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:76.3%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">21.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:21.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">1.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:1.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Ecuador win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-26</div>
+                <div class="fixture-teams">
+                    <span class="team ">Germany</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Ecuador</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">29.4%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:29.4%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">43.2%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:43.2%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">27.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:27.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-26</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Ivory Coast</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Curacao</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">74.6%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:74.6%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">16.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:16.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">9.3%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:9.3%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Ivory Coast win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP F</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Netherlands<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Japan<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Sweden</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Tunisia</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-14</div>
+                <div class="fixture-teams">
+                    <span class="team ">Netherlands</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Japan</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">29.4%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:29.4%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">40.0%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:40.0%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">30.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:30.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-14</div>
+                <div class="fixture-teams">
+                    <span class="team ">Tunisia</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Sweden</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">30.3%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:30.3%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">32.7%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:32.7%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">37.1%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:37.1%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Sweden win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-20</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Netherlands</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Tunisia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">67.4%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:67.4%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">23.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:23.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">8.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:8.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Netherlands win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-20</div>
+                <div class="fixture-teams">
+                    <span class="team ">Sweden</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Japan</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">12.9%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:12.9%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">34.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:34.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">52.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:52.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Japan win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-26</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Netherlands</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Sweden</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">58.8%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:58.8%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">33.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:33.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">7.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:7.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Netherlands win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-26</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Japan</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Tunisia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">63.9%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:63.9%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">26.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:26.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">10.1%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:10.1%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Japan win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP G</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Iran<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Belgium<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Egypt</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">New Zealand</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-15</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Belgium</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Egypt</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">47.4%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:47.4%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">31.0%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:31.0%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">21.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:21.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Belgium win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-15</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Iran</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">New Zealand</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">48.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:48.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">33.3%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:33.3%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">18.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:18.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Iran win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-21</div>
+                <div class="fixture-teams">
+                    <span class="team ">Belgium</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Iran</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">32.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:32.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">36.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:36.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">31.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:31.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-21</div>
+                <div class="fixture-teams">
+                    <span class="team ">New Zealand</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Egypt</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">26.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:26.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">29.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:29.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">44.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:44.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Egypt win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-26</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Belgium</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">New Zealand</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">65.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:65.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">25.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:25.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">9.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:9.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Belgium win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-26</div>
+                <div class="fixture-teams">
+                    <span class="team ">Egypt</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Iran</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">25.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:25.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">27.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:27.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">46.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:46.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Iran win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP H</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Spain<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>3</td><td>0</td><td>0</td>
+                <td class="pts">9</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Uruguay<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Saudi Arabia</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Cape Verde</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-15</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Spain</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Cape Verde</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">61.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:61.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">35.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:35.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">3.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:3.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Spain win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-15</div>
+                <div class="fixture-teams">
+                    <span class="team ">Saudi Arabia</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Uruguay</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">15.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:15.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">30.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:30.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">54.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:54.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Uruguay win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-21</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Spain</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Saudi Arabia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">73.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:73.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">23.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:23.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">2.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:2.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Spain win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-21</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Uruguay</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Cape Verde</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">53.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:53.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">35.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:35.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">11.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:11.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Uruguay win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-27</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Spain</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Uruguay</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">64.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:64.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">22.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:22.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">13.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:13.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Spain win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-27</div>
+                <div class="fixture-teams">
+                    <span class="team ">Cape Verde</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Saudi Arabia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">30.6%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:30.6%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">29.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:29.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">40.1%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:40.1%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Saudi Arabia win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP I</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Colombia<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">France<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Norway</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Senegal</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-16</div>
+                <div class="fixture-teams">
+                    <span class="team bold">France</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Senegal</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">52.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:52.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">31.8%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:31.8%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">16.0%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:16.0%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ France win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-16</div>
+                <div class="fixture-teams">
+                    <span class="team ">Norway</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Colombia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">25.9%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:25.9%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">30.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:30.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">43.8%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:43.8%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Colombia win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-22</div>
+                <div class="fixture-teams">
+                    <span class="team bold">France</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Norway</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">52.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:52.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">25.5%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:25.5%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">21.8%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:21.8%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ France win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-22</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Colombia</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Senegal</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">45.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:45.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">30.3%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:30.3%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">24.2%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:24.2%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Colombia win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-27</div>
+                <div class="fixture-teams">
+                    <span class="team ">France</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Colombia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">25.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:25.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">62.7%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:62.7%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">12.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:12.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-27</div>
+                <div class="fixture-teams">
+                    <span class="team ">Senegal</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Norway</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">29.1%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:29.1%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">26.5%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:26.5%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">44.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:44.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Norway win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP J</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Argentina<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>3</td><td>0</td><td>0</td>
+                <td class="pts">9</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Algeria<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Austria</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Jordan</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-16</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Argentina</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Algeria</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">69.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:69.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">22.4%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:22.4%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">8.3%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:8.3%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Argentina win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-16</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Austria</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Jordan</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">48.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:48.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">33.7%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:33.7%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">17.8%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:17.8%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Austria win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-22</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Argentina</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Austria</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">73.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:73.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">20.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:20.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">6.9%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:6.9%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Argentina win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-22</div>
+                <div class="fixture-teams">
+                    <span class="team ">Jordan</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Algeria</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">23.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:23.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">27.7%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:27.7%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">48.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:48.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Algeria win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-27</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Argentina</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Jordan</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">44.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:44.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">26.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:26.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">30.0%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:30.0%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Argentina win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-27</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Algeria</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Austria</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">42.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:42.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">28.2%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:28.2%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">29.6%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:29.6%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Algeria win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP K</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">Portugal<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>3</td><td>0</td><td>0</td>
+                <td class="pts">9</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Uzbekistan<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">DR Congo</td>
+                <td>4</td><td>0</td><td>1</td><td>3</td>
+                <td class="pts">1</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Colombia</td>
+                <td>2</td><td>0</td><td>1</td><td>1</td>
+                <td class="pts">1</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-17</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Portugal</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Uzbekistan</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">48.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:48.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">24.9%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:24.9%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">26.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:26.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Portugal win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-17</div>
+                <div class="fixture-teams">
+                    <span class="team ">Colombia</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">DR Congo</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">40.7%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:40.7%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label bold">51.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:51.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">7.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:7.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Draw</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-23</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Portugal</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Colombia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">37.2%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:37.2%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">31.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:31.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">31.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:31.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Portugal win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-23</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Uzbekistan</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">DR Congo</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">39.9%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:39.9%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">32.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:32.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">28.0%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:28.0%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Uzbekistan win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-28</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Portugal</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">DR Congo</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">54.3%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:54.3%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">33.2%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:33.2%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">12.5%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:12.5%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Portugal win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-28</div>
+                <div class="fixture-teams">
+                    <span class="team ">DR Congo</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Uzbekistan</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">33.4%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:33.4%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">25.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:25.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">41.0%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:41.0%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Uzbekistan win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-card">
+            <div class="group-header">GROUP L</div>
+            <div class="group-body">
+                <div class="standings-section">
+                    <div class="section-label">STANDINGS</div>
+                    <table class="standings-table">
+                        <thead><tr>
+                            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
+                        </tr></thead>
+                        <tbody>
+            <tr class="advancing">
+                <td class="pos">1</td>
+                <td class="team-name">England<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>3</td><td>0</td><td>0</td>
+                <td class="pts">9</td>
+            </tr>
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name">Croatia<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Panama</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
+            </tr>
+            <tr class="">
+                <td class="pos">4</td>
+                <td class="team-name">Ghana</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
+            </tr></tbody>
+                    </table>
+                </div>
+                <div class="fixtures-section">
+                    <div class="section-label">FIXTURES & PREDICTIONS</div>
+                    
+            <div class="fixture">
+                <div class="fixture-date">2026-06-17</div>
+                <div class="fixture-teams">
+                    <span class="team bold">England</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Croatia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">54.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:54.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">26.1%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:26.1%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">20.0%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:20.0%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ England win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-17</div>
+                <div class="fixture-teams">
+                    <span class="team ">Ghana</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Panama</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">21.3%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:21.3%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">25.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:25.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">53.1%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:53.1%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Panama win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-23</div>
+                <div class="fixture-teams">
+                    <span class="team bold">England</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Ghana</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">83.0%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:83.0%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">13.6%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:13.6%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">3.4%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:3.4%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ England win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-23</div>
+                <div class="fixture-teams">
+                    <span class="team ">Panama</span>
+                    <span class="vs">vs</span>
+                    <span class="team bold">Croatia</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label ">16.8%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:16.8%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">23.0%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:23.0%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label bold">60.2%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:60.2%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Croatia win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-28</div>
+                <div class="fixture-teams">
+                    <span class="team bold">England</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Panama</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">60.5%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:60.5%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">25.2%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:25.2%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">14.3%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:14.3%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ England win</div>
+            </div>
+            <div class="fixture">
+                <div class="fixture-date">2026-06-28</div>
+                <div class="fixture-teams">
+                    <span class="team bold">Croatia</span>
+                    <span class="vs">vs</span>
+                    <span class="team ">Ghana</span>
+                </div>
+                <div class="prob-bars">
+                    <div class="bar-group">
+                        <div class="bar-label bold">57.3%</div>
+                        <div class="bar-track"><div class="bar home-bar" style="width:57.3%"></div></div>
+                    </div>
+                    <div class="bar-group draw-group">
+                        <div class="bar-label ">33.0%</div>
+                        <div class="bar-track"><div class="bar draw-bar" style="width:33.0%"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label ">9.7%</div>
+                        <div class="bar-track"><div class="bar away-bar" style="width:9.7%"></div></div>
+                    </div>
+                </div>
+                <div class="prediction-tag">⚽ Croatia win</div>
+            </div>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+<footer>
+  Built with Python · XGBoost · MLflow · FastAPI &nbsp;|&nbsp; Predictions based on historical Elo ratings and team form
+</footer>
+</body>
+</html>
