@@ -93,3 +93,77 @@ def predict(request: MatchRequest):
     except Exception as e:
         logger.error(f"Prediction error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# Knockout response schema
+class KnockoutResponse(BaseModel):
+    home_team: str
+    away_team: str
+    home_advance_probability: float
+    away_advance_probability: float
+    extra_time_probability: float
+    predicted_outcome: str
+    confidence: str
+
+@app.post("/predict_knockout", response_model=KnockoutResponse)
+def predict_knockout(request: MatchRequest):
+    try:
+        # Build feature vector
+        features = pd.DataFrame([{
+            "home_elo": request.home_elo,
+            "away_elo": request.away_elo,
+            "elo_diff": request.home_elo - request.away_elo,
+            "home_form": request.home_form,
+            "away_form": request.away_form,
+            "form_diff": request.home_form - request.away_form,
+            "neutral": int(request.neutral)
+        }])
+
+        # Get base probabilities
+        proba = model.predict_proba(features)[0]
+        away_win = float(proba[0])
+        draw = float(proba[1])
+        home_win = float(proba[2])
+
+        # In knockout football, draws lead to extra time and penalties
+        # Redistribute draw probability proportionally based on relative
+        # win probabilities, since the stronger team tends to win shootouts
+        total_win = home_win + away_win
+        home_share = home_win / total_win if total_win > 0 else 0.5
+        away_share = away_win / total_win if total_win > 0 else 0.5
+
+        home_advance = round(home_win + (draw * home_share), 4)
+        away_advance = round(away_win + (draw * away_share), 4)
+
+        # Determine confidence level based on margin
+        margin = abs(home_advance - away_advance)
+        if margin > 0.25:
+            confidence = "High"
+        elif margin > 0.12:
+            confidence = "Medium"
+        else:
+            confidence = "Low"
+
+        # Predicted outcome
+        if home_advance > away_advance:
+            outcome = f"{request.home_team} advance"
+        else:
+            outcome = f"{request.away_team} advance"
+
+        logger.info(
+            f"Knockout prediction: {request.home_team} vs {request.away_team} "
+            f"-> {outcome} ({confidence} confidence)"
+        )
+
+        return KnockoutResponse(
+            home_team=request.home_team,
+            away_team=request.away_team,
+            home_advance_probability=home_advance,
+            away_advance_probability=away_advance,
+            extra_time_probability=round(draw, 4),
+            predicted_outcome=outcome,
+            confidence=confidence
+        )
+
+    except Exception as e:
+        logger.error(f"Knockout prediction error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
