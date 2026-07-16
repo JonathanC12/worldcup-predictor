@@ -1,6 +1,15 @@
 import pandas as pd
 from predict_matches import FIXTURES
 
+KNOCKOUT_ROUND_ORDER = ["round_of_32", "round_of_16", "quarterfinals", "semifinals"]
+KNOCKOUT_ROUND_LABELS = {
+    "round_of_32": "ROUND OF 32",
+    "round_of_16": "ROUND OF 16",
+    "quarterfinals": "QUARTERFINALS",
+    "semifinals": "SEMIFINALS",
+    "final": "FINAL",
+}
+
 def calculate_standings(df):
     standings = {}
     for group in df["group"].unique():
@@ -26,9 +35,94 @@ def calculate_standings(df):
         standings[group] = sorted(team_stats.items(), key=lambda x: (x[1]["Pts"], x[1]["W"]), reverse=True)
     return standings
 
-def generate_dashboard(predictions_csv: str, output_path: str):
+def build_matchup_card(row) -> str:
+    """Render one knockout fixture as a matchup card with advance-probability bars."""
+    home, away = row["home_team"], row["away_team"]
+    home_pct = float(str(row["home_advance%"]).replace("%", ""))
+    away_pct = float(str(row["away_advance%"]).replace("%", ""))
+    home_wins = row["predicted_outcome"] == f"{home} advance"
+
+    return f"""
+    <div class="matchup-card">
+        <div class="matchup-date">{row['date']}</div>
+        <div class="matchup-row">
+            <span class="matchup-team {'winner' if home_wins else ''}">{home}{' <span class="win-badge">WIN</span>' if home_wins else ''}</span>
+            <div class="adv-bar-track"><div class="adv-bar home-adv" style="width:{home_pct}%"></div></div>
+            <span class="matchup-pct">{row['home_advance%']}</span>
+        </div>
+        <div class="matchup-row">
+            <span class="matchup-team {'winner' if not home_wins else ''}">{away}{' <span class="win-badge">WIN</span>' if not home_wins else ''}</span>
+            <div class="adv-bar-track"><div class="adv-bar away-adv" style="width:{away_pct}%"></div></div>
+            <span class="matchup-pct">{row['away_advance%']}</span>
+        </div>
+        <div class="matchup-confidence conf-{row['confidence'].lower()}">{row['confidence']} confidence</div>
+    </div>"""
+
+
+def build_knockout_html(knockout_df: pd.DataFrame) -> str:
+    """Build the knockout bracket section (Round of 32 through Semifinals)."""
+    sections_html = ""
+    for round_key in KNOCKOUT_ROUND_ORDER:
+        round_df = knockout_df[knockout_df["round"] == round_key]
+        if round_df.empty:
+            continue
+        cards = "".join(build_matchup_card(row) for _, row in round_df.iterrows())
+        sections_html += f"""
+        <div class="bracket-round">
+            <div class="round-header">{KNOCKOUT_ROUND_LABELS[round_key]}</div>
+            <div class="matchup-grid">{cards}</div>
+        </div>"""
+
+    return f"""
+    <div class="section-title">KNOCKOUT STAGE PREDICTIONS</div>
+    {sections_html}"""
+
+
+def build_final_html(knockout_df: pd.DataFrame) -> str:
+    """Build the spotlight section for the final."""
+    final_row = knockout_df[knockout_df["round"] == "final"]
+    if final_row.empty:
+        return ""
+    row = final_row.iloc[0]
+    home, away = row["home_team"], row["away_team"]
+    home_pct = float(str(row["home_advance%"]).replace("%", ""))
+    away_pct = float(str(row["away_advance%"]).replace("%", ""))
+    home_wins = row["predicted_outcome"] == f"{home} advance"
+
+    return f"""
+    <div class="final-spotlight">
+        <div class="final-eyebrow">2026 FIFA WORLD CUP FINAL &middot; {row['date']}</div>
+        <div class="final-teams">
+            <div class="final-team {'winner' if home_wins else ''}">
+                <div class="final-team-name">{home}</div>
+                <div class="final-team-pct">{row['home_advance%']}</div>
+            </div>
+            <div class="final-vs">VS</div>
+            <div class="final-team {'winner' if not home_wins else ''}">
+                <div class="final-team-name">{away}</div>
+                <div class="final-team-pct">{row['away_advance%']}</div>
+            </div>
+        </div>
+        <div class="final-bar-track">
+            <div class="final-bar-home" style="width:{home_pct}%"></div>
+            <div class="final-bar-away" style="width:{away_pct}%"></div>
+        </div>
+        <div class="final-prediction">🏆 Predicted champion: <strong>{row['predicted_outcome'].replace(' advance', '')}</strong> &middot; {row['confidence']} confidence &middot; {row['extra_time%']} extra-time probability</div>
+    </div>"""
+
+
+def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str = "data/knockout_predictions.csv"):
     df = pd.read_csv(predictions_csv)
     standings = calculate_standings(df)
+    accuracy = df["correct"].mean() * 100 if "correct" in df.columns else None
+
+    try:
+        knockout_df = pd.read_csv(knockout_csv)
+    except FileNotFoundError:
+        knockout_df = pd.DataFrame(columns=["round"])
+
+    knockout_html = build_knockout_html(knockout_df)
+    final_html = build_final_html(knockout_df)
 
     fixtures_by_group = {}
     for _, row in df.iterrows():
@@ -408,19 +502,197 @@ def generate_dashboard(predictions_csv: str, output_path: str):
     .group-body {{ grid-template-columns: 1fr; }}
     .standings-section {{ border-right: none; border-bottom: 1px solid var(--border); }}
   }}
+
+  .section-title {{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-align: center;
+    margin: 3rem 0 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }}
+
+  .bracket-round {{
+    margin-bottom: 2rem;
+  }}
+
+  .round-header {{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+    color: var(--text);
+    margin-bottom: 0.9rem;
+    text-align: center;
+  }}
+
+  .matchup-grid {{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+  }}
+
+  .matchup-card {{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+  }}
+
+  .matchup-date {{
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }}
+
+  .matchup-row {{
+    display: grid;
+    grid-template-columns: 1fr 3fr auto;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+  }}
+
+  .matchup-team {{
+    font-size: 0.85rem;
+    color: var(--text);
+  }}
+
+  .matchup-team.winner {{
+    font-weight: 700;
+    color: var(--green);
+  }}
+
+  .win-badge {{
+    display: inline-block;
+    margin-left: 0.3rem;
+    padding: 0.05rem 0.35rem;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 4px;
+    font-size: 0.55rem;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    vertical-align: middle;
+  }}
+
+  .adv-bar-track {{
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }}
+
+  .adv-bar {{ height: 100%; border-radius: 3px; transition: width 1s ease; }}
+  .home-adv {{ background: var(--blue); }}
+  .away-adv {{ background: var(--gold); }}
+
+  .matchup-pct {{
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: right;
+    min-width: 3.2rem;
+  }}
+
+  .matchup-confidence {{
+    margin-top: 0.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }}
+
+  .conf-high {{ color: var(--green); }}
+  .conf-medium {{ color: var(--gold); }}
+  .conf-low {{ color: var(--muted); }}
+
+  .final-spotlight {{
+    margin-top: 3rem;
+    padding: 2.5rem 1.5rem;
+    background: linear-gradient(160deg, var(--surface2), var(--surface));
+    border: 1px solid var(--gold);
+    border-radius: 16px;
+    text-align: center;
+  }}
+
+  .final-eyebrow {{
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }}
+
+  .final-teams {{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 1.5rem;
+  }}
+
+  .final-team-name {{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }}
+
+  .final-team.winner .final-team-name {{ color: var(--gold2); }}
+
+  .final-team-pct {{
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }}
+
+  .final-team.winner .final-team-pct {{ color: var(--gold); font-weight: 700; }}
+
+  .final-vs {{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }}
+
+  .final-bar-track {{
+    display: flex;
+    height: 10px;
+    max-width: 500px;
+    margin: 0 auto 1.25rem;
+    border-radius: 5px;
+    overflow: hidden;
+  }}
+
+  .final-bar-home {{ background: var(--blue); }}
+  .final-bar-away {{ background: var(--gold); }}
+
+  .final-prediction {{
+    font-size: 0.95rem;
+    color: var(--text);
+  }}
+
+  @media (max-width: 700px) {{
+    .final-teams {{ gap: 1.2rem; }}
+  }}
 </style>
 </head>
 <body>
 <header>
   <div class="header-eyebrow">ML-Powered Tournament Analysis</div>
   <h1>2026 World Cup Predictions</h1>
-  <div class="header-sub">Group Stage · XGBoost Model · Elo + Form Features</div>
-  <div class="model-tag">58.3% ACCURACY · 72 FIXTURES PREDICTED</div>
+  <div class="header-sub">Group Stage &amp; Knockout Stage &middot; XGBoost Model &middot; Elo + Form Features</div>
+  <div class="model-tag">{f"{accuracy:.1f}% GROUP STAGE ACCURACY" if accuracy is not None else "58.3% TEST ACCURACY"} &middot; 72 FIXTURES TRACKED</div>
 </header>
 <div class="container">
   <div class="groups-grid">
     {groups_html}
   </div>
+  {knockout_html}
+  {final_html}
 </div>
 <footer>
   Built with Python · XGBoost · MLflow · FastAPI &nbsp;|&nbsp; Predictions based on historical Elo ratings and team form

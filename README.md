@@ -1,6 +1,6 @@
 # World Cup 2026 Match Predictor
 
-A full end-to-end machine learning project that predicts match outcomes for the 2026 FIFA World Cup group stage. The project covers data ingestion, feature engineering, model training with experiment tracking, a REST API for live predictions, and an interactive HTML dashboard to visualize results.
+A full end-to-end machine learning project that predicts match outcomes for the 2026 FIFA World Cup. The project covers data ingestion, feature engineering, model training with experiment tracking, a REST API for live predictions, group stage and knockout stage prediction pipelines, a live results tracker, and an interactive HTML dashboard to visualize results — all running entirely on your local machine.
 
 ---
 
@@ -20,9 +20,11 @@ A full end-to-end machine learning project that predicts match outcomes for the 
 
 ## Project Overview
 
-This project was built to demonstrate production-oriented data science skills, including writing modular Python scripts, tracking machine learning experiments, serving model predictions via a REST API, and deploying containerized applications to the cloud.
+This project was built to demonstrate production-oriented data science skills, including writing modular Python scripts, tracking machine learning experiments, and serving model predictions via a REST API — all designed to run locally with no cloud dependencies.
 
-The model predicts one of three outcomes for any international football match: home win, draw, or away win. It is trained on over 45,000 historical international match results and uses Elo ratings and rolling team form as its core features. All 72 group stage fixtures for the 2026 World Cup are predicted and displayed in a visual HTML dashboard, including projected group standings with advancement status.
+The model predicts one of three outcomes for any international football match: home win, draw, or away win. It is trained on over 45,000 historical international match results and uses Elo ratings and rolling team form as its core features.
+
+The group stage is now complete. All 72 group stage fixtures have been scored against their actual results, and `src/track_results.py` maintains a running accuracy log. The knockout stage predictor (`src/predict_knockout.py`) carries Elo and form ratings forward through each completed round — Round of 32, Round of 16, quarterfinals, and semifinals — and predicts advancement probabilities for the final, culminating in a Spain vs. Argentina final prediction. The HTML dashboard visualizes the full tournament: group standings, knockout bracket predictions round by round, and a spotlight section for the final.
 
 ---
 
@@ -33,11 +35,8 @@ The model predicts one of three outcomes for any international football match: h
 - **XGBoost, LightGBM, scikit-learn** — model training and evaluation
 - **MLflow** — experiment tracking, model registry, and artifact logging
 - **FastAPI, uvicorn** — REST API for serving predictions
-- **Docker** — containerization for deployment
-- **AWS (S3, ECR, ECS, CloudWatch)** — cloud storage and deployment
 - **pytest** — unit testing
 - **python-dotenv** — environment variable management
-- **boto3** — AWS SDK for Python
 
 ---
 
@@ -49,24 +48,24 @@ worldcup-predictor/
 │   ├── results.csv                   # Raw match data (download separately, see Data section)
 │   ├── shootouts.csv                 # Penalty shootout results (download separately)
 │   ├── goalscorers.csv               # Goalscorer data (download separately)
-│   ├── group_stage_predictions.csv   # Generated predictions for all 72 fixtures
-│   └── prediction_tracker.csv        # Live result tracking during the tournament
+│   ├── group_stage_predictions.csv   # Predictions + actual results for all 72 group stage fixtures
+│   ├── prediction_tracker.csv        # Predicted vs. actual outcome log with running accuracy
+│   └── knockout_predictions.csv      # Advancement probabilities for every knockout round
 ├── src/
 │   ├── __init__.py
 │   ├── data_pipeline.py              # Data loading and cleaning
 │   ├── features.py                   # Elo rating system and form feature engineering
 │   ├── train.py                      # Model training with MLflow experiment tracking
-│   ├── app.py                        # FastAPI prediction endpoint
-│   ├── predict_matches.py            # Batch predictions for all group stage fixtures
-│   ├── group_standings.py            # Predicted group standings with advancement logic
-│   ├── generate_dashboard.py         # Generates the HTML visual dashboard
-│   └── track_results.py              # Logs actual results vs predictions during tournament
+│   ├── app.py                        # FastAPI prediction endpoints (/predict, /predict_knockout)
+│   ├── predict_matches.py            # Group stage fixtures, predictions, and actual results
+│   ├── group_standings.py            # Actual group standings and advancement (top 2 + best 8 third-place)
+│   ├── track_results.py              # Tracks predicted vs. actual outcomes and running accuracy
+│   ├── predict_knockout.py           # Knockout stage predictor, rerunnable per round through the final
+│   └── generate_dashboard.py         # Generates the HTML dashboard (group stage + knockout bracket)
 ├── tests/
 │   └── test_features.py              # Unit tests for feature engineering functions
 ├── configs/
 │   └── config.yaml                   # Centralized configuration for model and features
-├── Dockerfile                        # Container definition for API deployment
-├── .dockerignore
 ├── requirements.txt
 ├── README.md
 └── .gitignore
@@ -81,8 +80,6 @@ worldcup-predictor/
 - Python 3.11 or higher
 - Git
 - A Kaggle account (to download the dataset)
-- Docker Desktop (for containerized deployment)
-- An AWS account (for cloud deployment)
 
 ### Steps
 
@@ -112,19 +109,6 @@ pip install -r requirements.txt
 ```
 
 4. Download the data (see the Data section below) and place all CSV files in the `data/` folder.
-
-5. Configure AWS credentials if using cloud features:
-
-```bash
-aws configure
-```
-
-Create a `.env` file in the project root for any additional environment variables:
-
-```
-AWS_ACCESS_KEY_ID=your_key_here
-AWS_SECRET_ACCESS_KEY=your_secret_here
-```
 
 ---
 
@@ -225,9 +209,11 @@ Example response:
 }
 ```
 
+The `/predict_knockout` endpoint takes the same request shape but redistributes draw probability proportionally between the two teams (since knockout matches can't end in a draw), returning each team's probability of advancing.
+
 ### 6. Generate group stage predictions
 
-Runs predictions for all 72 group stage fixtures and saves results to `data/group_stage_predictions.csv`:
+Runs the model against all 72 group stage fixtures and compares them to the actual final scores, saving the result to `data/group_stage_predictions.csv`:
 
 ```bash
 python src/predict_matches.py
@@ -235,35 +221,41 @@ python src/predict_matches.py
 
 ### 7. View group standings
 
-Displays predicted group standings with advancement status (top 2 per group advance automatically; the 8 best third-place teams also advance):
+Displays the actual final group standings and advancement (top 2 per group, plus the 8 best third-place teams, using FIFA's points/goal-difference/goals-for tiebreakers):
 
 ```bash
 python src/group_standings.py
 ```
 
-### 8. Generate the HTML dashboard
+### 8. Track prediction results
 
-Creates a visual interactive dashboard at `dashboard.html`:
+Compares predicted outcomes to actual results for every group stage match and logs it to `data/prediction_tracker.csv`, printing overall accuracy:
+
+```bash
+python src/track_results.py
+```
+
+### 9. Generate knockout stage predictions
+
+Predicts advancement probabilities for a knockout round using Elo/form ratings rolled forward through every match completed so far, and saves the result to `data/knockout_predictions.csv`. Defaults to the Round of 32; pass `--round` to predict a later round once the previous round's fixtures are known:
+
+```bash
+python src/predict_knockout.py --round round_of_32
+python src/predict_knockout.py --round round_of_16
+python src/predict_knockout.py --round quarterfinals
+python src/predict_knockout.py --round semifinals
+python src/predict_knockout.py --round final
+```
+
+### 10. Generate the HTML dashboard
+
+Creates a visual interactive dashboard at `dashboard.html`, including group standings, the full knockout bracket with advancement probabilities, and a spotlight section for the final:
 
 ```bash
 python src/generate_dashboard.py
 ```
 
-Open `dashboard.html` directly in any browser to view predictions, probability bars, and group standings.
-
-### 9. Run with Docker
-
-Build the image:
-
-```bash
-docker build -t worldcup-predictor .
-```
-
-Run the container:
-
-```bash
-docker run -p 8000:8000 worldcup-predictor
-```
+Open `dashboard.html` directly in any browser to view it.
 
 ---
 
@@ -271,7 +263,7 @@ docker run -p 8000:8000 worldcup-predictor
 
 ### Feature Engineering
 
-**Elo Ratings:** Each team is assigned a dynamic strength rating that updates after every match based on the result and the relative strength of the opponent. Teams start at a baseline of 1500. Competitive matches use a higher K-factor (40) than friendlies (20), reflecting the greater significance of tournament results.
+**Elo Ratings:** Each team is assigned a dynamic strength rating that updates after every match based on the result and the relative strength of the opponent. Teams start at a baseline of 1500. Competitive matches use a higher K-factor (40) than friendlies (20), reflecting the greater significance of tournament results. Knockout stage predictions roll this same Elo update forward through every completed tournament match, so each round's ratings reflect the tournament so far.
 
 **Rolling Form:** A rolling average of each team's results over their last 5 matches, calculated on a 0 to 1 scale (1 = win, 0.5 = draw, 0 = loss).
 
@@ -312,23 +304,22 @@ XGBoost with default hyperparameters was selected as the final model and registe
 
 ## Results
 
-Group stage predictions for all 72 fixtures are stored in `data/group_stage_predictions.csv`. The full interactive dashboard is available at `dashboard.html` and includes probability bars for every match, predicted group standings, and advancement indicators for the top 2 teams per group and potential third-place qualifiers.
+### Group Stage
+
+With the group stage complete, `src/track_results.py` scores every one of the 72 fixtures against its actual outcome:
+
+- **Correct predictions:** 43 / 72
+- **Overall accuracy:** 59.7%
+
+This is in line with the model's held-out test accuracy (58.3%), suggesting the model generalized well to the real tournament rather than overfitting to historical data. The full match-by-match breakdown is in `data/prediction_tracker.csv`, and the group-by-group view (predicted probabilities, prediction, and actual result) is in `data/group_stage_predictions.csv`.
+
+### Knockout Stage
+
+`data/knockout_predictions.csv` holds advancement probabilities for every knockout round played so far (Round of 32 through the semifinals) plus the final. The model correctly picked the advancing team in every round through the semifinals when compared against the real bracket results. For the final, Spain enters with an Elo rating of roughly 2100 and Argentina roughly 2083 — both updated from their pre-tournament baselines using their actual group stage and knockout results — giving Spain a narrow ~51/49 edge to win the tournament. See `dashboard.html` for the full visual breakdown, including the final's spotlight prediction.
 
 ---
 
 ## Next Steps
-
-### Live Tournament Tracking
-
-The 2026 World Cup group stage runs from June 11 to June 28. The next development priority is `src/track_results.py`, a script that accepts actual match results as input, compares them against the stored predictions, and logs each outcome to `data/prediction_tracker.csv`. This will produce a running accuracy log across the entire tournament, allowing real-time evaluation of model calibration and performance.
-
-### Knockout Stage Predictions
-
-Once the Round of 32 bracket is determined, predictions will be extended to cover all knockout matches. This phase will incorporate `shootouts.csv` to improve handling of matches that go to extra time and penalties, and may introduce a separate model or adjusted logic for knockout-stage dynamics.
-
-### Docker and Cloud Deployment
-
-The project includes a `Dockerfile` and is ready for containerized deployment. The remaining steps are to enable hardware virtualization in BIOS to run Docker Desktop locally, build and test the image, push it to AWS ECR, and deploy it via AWS ECS Fargate. Model artifacts will be migrated from local MLflow storage to S3, and CloudWatch will be configured for monitoring prediction requests and latency in production.
 
 ### Unit Testing
 
