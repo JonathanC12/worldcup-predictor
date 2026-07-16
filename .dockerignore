@@ -1,6 +1,0 @@
-.venv/
-.git/
-mlruns/
-__pycache__/
-*.pyc
-.env
