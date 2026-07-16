@@ -315,7 +315,12 @@ This is in line with the model's held-out test accuracy (58.3%), suggesting the 
 
 ### Knockout Stage
 
-`data/knockout_predictions.csv` holds advancement probabilities for every knockout round played so far (Round of 32 through the semifinals) plus the final. The model correctly picked the advancing team in every round through the semifinals when compared against the real bracket results. For the final, Spain enters with an Elo rating of roughly 2100 and Argentina roughly 2083 — both updated from their pre-tournament baselines using their actual group stage and knockout results — giving Spain a narrow ~51/49 edge to win the tournament. See `dashboard.html` for the full visual breakdown, including the final's spotlight prediction.
+`data/knockout_predictions.csv` holds advancement probabilities for every knockout round played so far (Round of 32 through the semifinals) plus the final, each scored against the actual advancing team (`src/predict_knockout.knockout_accuracy_so_far()`):
+
+- **Correct predictions:** 27 / 30
+- **Overall accuracy (updated through the semifinal round):** 90.0%
+
+The 3 misses were all matches the model favored the team that ended up losing on penalties or in a late upset (Germany vs. Paraguay, Australia vs. Egypt, and Brazil vs. Norway) — a reminder that Elo/form alone can't capture shootout variance or one-off giant-killing performances. For the final, Spain enters with an Elo rating of roughly 2100 and Argentina roughly 2083 — both updated from their pre-tournament baselines using their actual group stage and knockout results — giving Spain a narrow ~51/49 edge to win the tournament. See `dashboard.html` for the full visual breakdown, including per-match correct/incorrect indicators and the final's spotlight prediction.
 
 ---
 

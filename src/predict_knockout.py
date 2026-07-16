@@ -39,23 +39,25 @@ ROUND_OF_32 = [
 
 # Actual Round of 32 results. Extra-time/penalty matches are recorded with
 # their final (AET) score, so a shootout counts as a draw for Elo purposes.
+# "winner" is the team that actually advanced (accounts for penalty shootouts,
+# which a drawn AET score alone can't tell you).
 ROUND_OF_32_RESULTS = [
-    {"home_team": "South Africa",  "away_team": "Canada",       "home_score": 0, "away_score": 1},
-    {"home_team": "Brazil",        "away_team": "Japan",        "home_score": 2, "away_score": 1},
-    {"home_team": "Germany",       "away_team": "Paraguay",     "home_score": 1, "away_score": 1},
-    {"home_team": "Netherlands",   "away_team": "Morocco",      "home_score": 1, "away_score": 1},
-    {"home_team": "Ivory Coast",   "away_team": "Norway",       "home_score": 1, "away_score": 2},
-    {"home_team": "France",        "away_team": "Sweden",       "home_score": 3, "away_score": 0},
-    {"home_team": "Mexico",        "away_team": "Ecuador",      "home_score": 2, "away_score": 0},
-    {"home_team": "England",       "away_team": "DR Congo",     "home_score": 2, "away_score": 1},
-    {"home_team": "Belgium",       "away_team": "Senegal",      "home_score": 3, "away_score": 2},
-    {"home_team": "United States", "away_team": "Bosnia and Herzegovina", "home_score": 2, "away_score": 0},
-    {"home_team": "Spain",         "away_team": "Austria",      "home_score": 3, "away_score": 0},
-    {"home_team": "Portugal",      "away_team": "Croatia",      "home_score": 2, "away_score": 1},
-    {"home_team": "Switzerland",   "away_team": "Algeria",      "home_score": 2, "away_score": 0},
-    {"home_team": "Australia",     "away_team": "Egypt",        "home_score": 1, "away_score": 1},
-    {"home_team": "Argentina",     "away_team": "Cape Verde",   "home_score": 3, "away_score": 2},
-    {"home_team": "Colombia",      "away_team": "Ghana",        "home_score": 1, "away_score": 0},
+    {"home_team": "South Africa",  "away_team": "Canada",       "home_score": 0, "away_score": 1, "winner": "Canada"},
+    {"home_team": "Brazil",        "away_team": "Japan",        "home_score": 2, "away_score": 1, "winner": "Brazil"},
+    {"home_team": "Germany",       "away_team": "Paraguay",     "home_score": 1, "away_score": 1, "winner": "Paraguay"},
+    {"home_team": "Netherlands",   "away_team": "Morocco",      "home_score": 1, "away_score": 1, "winner": "Morocco"},
+    {"home_team": "Ivory Coast",   "away_team": "Norway",       "home_score": 1, "away_score": 2, "winner": "Norway"},
+    {"home_team": "France",        "away_team": "Sweden",       "home_score": 3, "away_score": 0, "winner": "France"},
+    {"home_team": "Mexico",        "away_team": "Ecuador",      "home_score": 2, "away_score": 0, "winner": "Mexico"},
+    {"home_team": "England",       "away_team": "DR Congo",     "home_score": 2, "away_score": 1, "winner": "England"},
+    {"home_team": "Belgium",       "away_team": "Senegal",      "home_score": 3, "away_score": 2, "winner": "Belgium"},
+    {"home_team": "United States", "away_team": "Bosnia and Herzegovina", "home_score": 2, "away_score": 0, "winner": "United States"},
+    {"home_team": "Spain",         "away_team": "Austria",      "home_score": 3, "away_score": 0, "winner": "Spain"},
+    {"home_team": "Portugal",      "away_team": "Croatia",      "home_score": 2, "away_score": 1, "winner": "Portugal"},
+    {"home_team": "Switzerland",   "away_team": "Algeria",      "home_score": 2, "away_score": 0, "winner": "Switzerland"},
+    {"home_team": "Australia",     "away_team": "Egypt",        "home_score": 1, "away_score": 1, "winner": "Egypt"},
+    {"home_team": "Argentina",     "away_team": "Cape Verde",   "home_score": 3, "away_score": 2, "winner": "Argentina"},
+    {"home_team": "Colombia",      "away_team": "Ghana",        "home_score": 1, "away_score": 0, "winner": "Colombia"},
 ]
 
 # --- Round of 16 (actual bracket) ---
@@ -71,14 +73,14 @@ ROUND_OF_16 = [
 ]
 
 ROUND_OF_16_RESULTS = [
-    {"home_team": "Canada",   "away_team": "Morocco",      "home_score": 0, "away_score": 3},
-    {"home_team": "Paraguay", "away_team": "France",       "home_score": 0, "away_score": 1},
-    {"home_team": "Brazil",   "away_team": "Norway",       "home_score": 1, "away_score": 2},
-    {"home_team": "Mexico",   "away_team": "England",      "home_score": 2, "away_score": 3},
-    {"home_team": "Portugal", "away_team": "Spain",        "home_score": 0, "away_score": 1},
-    {"home_team": "United States", "away_team": "Belgium", "home_score": 1, "away_score": 4},
-    {"home_team": "Argentina", "away_team": "Egypt",       "home_score": 3, "away_score": 2},
-    {"home_team": "Switzerland", "away_team": "Colombia",  "home_score": 0, "away_score": 0},
+    {"home_team": "Canada",   "away_team": "Morocco",      "home_score": 0, "away_score": 3, "winner": "Morocco"},
+    {"home_team": "Paraguay", "away_team": "France",       "home_score": 0, "away_score": 1, "winner": "France"},
+    {"home_team": "Brazil",   "away_team": "Norway",       "home_score": 1, "away_score": 2, "winner": "Norway"},
+    {"home_team": "Mexico",   "away_team": "England",      "home_score": 2, "away_score": 3, "winner": "England"},
+    {"home_team": "Portugal", "away_team": "Spain",        "home_score": 0, "away_score": 1, "winner": "Spain"},
+    {"home_team": "United States", "away_team": "Belgium", "home_score": 1, "away_score": 4, "winner": "Belgium"},
+    {"home_team": "Argentina", "away_team": "Egypt",       "home_score": 3, "away_score": 2, "winner": "Argentina"},
+    {"home_team": "Switzerland", "away_team": "Colombia",  "home_score": 0, "away_score": 0, "winner": "Switzerland"},
 ]
 
 # --- Quarterfinals (actual bracket) ---
@@ -90,10 +92,10 @@ QUARTERFINALS = [
 ]
 
 QUARTERFINAL_RESULTS = [
-    {"home_team": "France",   "away_team": "Morocco",   "home_score": 2, "away_score": 0},
-    {"home_team": "Spain",    "away_team": "Belgium",   "home_score": 2, "away_score": 1},
-    {"home_team": "Norway",   "away_team": "England",   "home_score": 1, "away_score": 2},
-    {"home_team": "Argentina", "away_team": "Switzerland", "home_score": 3, "away_score": 1},
+    {"home_team": "France",   "away_team": "Morocco",   "home_score": 2, "away_score": 0, "winner": "France"},
+    {"home_team": "Spain",    "away_team": "Belgium",   "home_score": 2, "away_score": 1, "winner": "Spain"},
+    {"home_team": "Norway",   "away_team": "England",   "home_score": 1, "away_score": 2, "winner": "England"},
+    {"home_team": "Argentina", "away_team": "Switzerland", "home_score": 3, "away_score": 1, "winner": "Argentina"},
 ]
 
 # --- Semifinals (actual bracket) ---
@@ -103,9 +105,18 @@ SEMIFINALS = [
 ]
 
 SEMIFINAL_RESULTS = [
-    {"home_team": "Spain",   "away_team": "France",   "home_score": 2, "away_score": 0},
-    {"home_team": "England", "away_team": "Argentina", "home_score": 1, "away_score": 2},
+    {"home_team": "Spain",   "away_team": "France",   "home_score": 2, "away_score": 0, "winner": "Spain"},
+    {"home_team": "England", "away_team": "Argentina", "home_score": 1, "away_score": 2, "winner": "Argentina"},
 ]
+
+# Round name -> its actual results, for scoring predictions against reality.
+# The final has no entry here since it hasn't been played yet.
+ROUND_ACTUAL_RESULTS = {
+    "round_of_32": ROUND_OF_32_RESULTS,
+    "round_of_16": ROUND_OF_16_RESULTS,
+    "quarterfinals": QUARTERFINAL_RESULTS,
+    "semifinals": SEMIFINAL_RESULTS,
+}
 
 # --- Final ---
 FINAL = [
@@ -195,6 +206,42 @@ def predict_knockout_fixture(fixture: dict, elo_ratings: dict, form_ratings: dic
     }
 
 
+def attach_actual_outcomes(round_name: str, results_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Score predictions against reality for rounds that have actually been
+    played. The final has no actual result yet, so its rows are left blank.
+    """
+    results_df = results_df.copy()
+    actual_results = ROUND_ACTUAL_RESULTS.get(round_name)
+    if actual_results is None:
+        results_df["actual_outcome"] = None
+        results_df["correct"] = None
+        return results_df
+
+    winners = {(r["home_team"], r["away_team"]): r["winner"] for r in actual_results}
+    actual_outcomes = []
+    for _, row in results_df.iterrows():
+        winner = winners[(row["home_team"], row["away_team"])]
+        actual_outcomes.append(f"{winner} advance")
+
+    results_df["actual_outcome"] = actual_outcomes
+    results_df["correct"] = results_df["predicted_outcome"] == results_df["actual_outcome"]
+    return results_df
+
+
+def knockout_accuracy_so_far(csv_path: str = "data/knockout_predictions.csv") -> tuple:
+    """
+    Overall knockout-stage prediction accuracy across every completed round
+    (Round of 32 through the semifinals). Excludes the final, which hasn't
+    been played yet. Returns (correct, total).
+    """
+    df = pd.read_csv(csv_path)
+    completed = df[df["round"] != "final"]
+    correct = int(completed["correct"].sum())
+    total = len(completed)
+    return correct, total
+
+
 def run_round(round_name: str) -> pd.DataFrame:
     logger.info("Building baseline Elo and form ratings from historical data...")
     df = load_raw_data()
@@ -213,15 +260,27 @@ def run_round(round_name: str) -> pd.DataFrame:
     results = [predict_knockout_fixture(f, elo_ratings, form_ratings) for f in round_config["fixtures"]]
     results_df = pd.DataFrame(results)
     results_df.insert(0, "round", round_name)
+    results_df = attach_actual_outcomes(round_name, results_df)
     return results_df
 
 
 def print_table(round_name: str, results_df: pd.DataFrame) -> None:
+    has_actuals = round_name in ROUND_ACTUAL_RESULTS
     print(f"\n{round_name.upper().replace('_', ' ')}")
-    print(f"{'Date':<12} {'Home Team':<25} {'Away Team':<25} {'Home Adv%':<10} {'Away Adv%':<10} {'ExtraTime%':<11} {'Predicted':<25} {'Confidence'}")
-    print("-" * 135)
+    header = f"{'Date':<12} {'Home Team':<25} {'Away Team':<25} {'Home Adv%':<10} {'Away Adv%':<10} {'ExtraTime%':<11} {'Predicted':<25} {'Confidence':<11}"
+    if has_actuals:
+        header += f" {'Actual':<25} {'Correct'}"
+    print(header)
+    print("-" * (145 + (35 if has_actuals else 0)))
     for _, row in results_df.iterrows():
-        print(f"{row['date']:<12} {row['home_team']:<25} {row['away_team']:<25} {row['home_advance%']:<10} {row['away_advance%']:<10} {row['extra_time%']:<11} {row['predicted_outcome']:<25} {row['confidence']}")
+        line = f"{row['date']:<12} {row['home_team']:<25} {row['away_team']:<25} {row['home_advance%']:<10} {row['away_advance%']:<10} {row['extra_time%']:<11} {row['predicted_outcome']:<25} {row['confidence']:<11}"
+        if has_actuals:
+            line += f" {row['actual_outcome']:<25} {row['correct']}"
+        print(line)
+
+    if has_actuals:
+        correct = int(results_df["correct"].sum())
+        print(f"\n{round_name.replace('_', ' ').title()} accuracy: {correct}/{len(results_df)} ({correct/len(results_df)*100:.1f}%)")
 
 
 def save_results(results_df: pd.DataFrame, output_path: str = "data/knockout_predictions.csv") -> None:

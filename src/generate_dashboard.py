@@ -1,5 +1,7 @@
 import pandas as pd
 from predict_matches import FIXTURES
+from group_standings import calculate_standings, best_third_placed_teams
+from predict_knockout import knockout_accuracy_so_far
 
 KNOCKOUT_ROUND_ORDER = ["round_of_32", "round_of_16", "quarterfinals", "semifinals"]
 KNOCKOUT_ROUND_LABELS = {
@@ -10,30 +12,7 @@ KNOCKOUT_ROUND_LABELS = {
     "final": "FINAL",
 }
 
-def calculate_standings(df):
-    standings = {}
-    for group in df["group"].unique():
-        group_df = df[df["group"] == group]
-        teams = set(group_df["home_team"].tolist() + group_df["away_team"].tolist())
-        team_stats = {team: {"P": 0, "W": 0, "D": 0, "L": 0, "Pts": 0} for team in teams}
-
-        for _, row in group_df.iterrows():
-            home, away = row["home_team"], row["away_team"]
-            pred = row["prediction"]
-            team_stats[home]["P"] += 1
-            team_stats[away]["P"] += 1
-            if pred == f"{home} win":
-                team_stats[home]["W"] += 1; team_stats[home]["Pts"] += 3
-                team_stats[away]["L"] += 1
-            elif pred == "Draw":
-                team_stats[home]["D"] += 1; team_stats[home]["Pts"] += 1
-                team_stats[away]["D"] += 1; team_stats[away]["Pts"] += 1
-            else:
-                team_stats[away]["W"] += 1; team_stats[away]["Pts"] += 3
-                team_stats[home]["L"] += 1
-
-        standings[group] = sorted(team_stats.items(), key=lambda x: (x[1]["Pts"], x[1]["W"]), reverse=True)
-    return standings
+MEDALS = {0: "🥇", 1: "🥈", 2: "🥉"}
 
 def build_matchup_card(row) -> str:
     """Render one knockout fixture as a matchup card with advance-probability bars."""
@@ -41,6 +20,19 @@ def build_matchup_card(row) -> str:
     home_pct = float(str(row["home_advance%"]).replace("%", ""))
     away_pct = float(str(row["away_advance%"]).replace("%", ""))
     home_wins = row["predicted_outcome"] == f"{home} advance"
+
+    actual_outcome = row.get("actual_outcome")
+    has_actual = pd.notna(actual_outcome)
+    result_html = ""
+    if has_actual:
+        correct = bool(row["correct"])
+        actual_team = actual_outcome.replace(" advance", "")
+        icon = "✓" if correct else "✗"
+        label = "Correct" if correct else "Incorrect"
+        result_html = f"""
+        <div class="result-tag {'result-correct' if correct else 'result-incorrect'}">
+            {icon} {label} &middot; actual: {actual_team} advanced
+        </div>"""
 
     return f"""
     <div class="matchup-card">
@@ -56,6 +48,7 @@ def build_matchup_card(row) -> str:
             <span class="matchup-pct">{row['away_advance%']}</span>
         </div>
         <div class="matchup-confidence conf-{row['confidence'].lower()}">{row['confidence']} confidence</div>
+        {result_html}
     </div>"""
 
 
@@ -111,10 +104,40 @@ def build_final_html(knockout_df: pd.DataFrame) -> str:
     </div>"""
 
 
-def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str = "data/knockout_predictions.csv"):
+def build_accuracy_tracker_html(group_accuracy: tuple, knockout_accuracy: tuple) -> str:
+    """Two stat cards summarizing prediction accuracy so far."""
+    group_correct, group_total = group_accuracy
+    knockout_correct, knockout_total = knockout_accuracy
+    group_pct = group_correct / group_total * 100 if group_total else 0.0
+    knockout_pct = knockout_correct / knockout_total * 100 if knockout_total else 0.0
+
+    return f"""
+    <div class="accuracy-tracker">
+        <div class="accuracy-card">
+            <div class="accuracy-label">GROUP STAGE ACCURACY</div>
+            <div class="accuracy-value">{group_pct:.1f}%</div>
+            <div class="accuracy-detail">{group_correct} / {group_total} correct</div>
+        </div>
+        <div class="accuracy-card">
+            <div class="accuracy-label">KNOCKOUT STAGE ACCURACY</div>
+            <div class="accuracy-value">{knockout_pct:.1f}%</div>
+            <div class="accuracy-detail">{knockout_correct} / {knockout_total} correct &middot; updated through the Semifinal Round</div>
+        </div>
+    </div>"""
+
+
+def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str = "data/knockout_predictions.csv",
+                        tracker_csv: str = "data/prediction_tracker.csv"):
     df = pd.read_csv(predictions_csv)
-    standings = calculate_standings(df)
-    accuracy = df["correct"].mean() * 100 if "correct" in df.columns else None
+    standings = calculate_standings(FIXTURES)
+    qualifying_thirds = {group for group, _ in best_third_placed_teams(standings)}
+    group_accuracy = (int(df["correct"].sum()), len(df)) if "correct" in df.columns else (0, 0)
+
+    tracker_df = pd.read_csv(tracker_csv)
+    result_lookup = {
+        (row["date"], row["home_team"], row["away_team"]): (row["actual_outcome"], row["correct"])
+        for _, row in tracker_df.iterrows()
+    }
 
     try:
         knockout_df = pd.read_csv(knockout_csv)
@@ -123,6 +146,7 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
 
     knockout_html = build_knockout_html(knockout_df)
     final_html = build_final_html(knockout_df)
+    accuracy_html = build_accuracy_tracker_html(group_accuracy, knockout_accuracy_so_far(knockout_csv))
 
     fixtures_by_group = {}
     for _, row in df.iterrows():
@@ -136,12 +160,14 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
         # Standings rows
         standing_rows = ""
         for i, (team, s) in enumerate(standings[group]):
-            advance = "advancing" if i < 2 else ""
-            badge = '<span class="badge">ADVANCE</span>' if i < 2 else ""
+            advances = i < 2 or (i == 2 and group in qualifying_thirds)
+            medal = MEDALS.get(i, "") if (i < 2 or (i == 2 and group in qualifying_thirds)) else ""
+            row_class = "advancing" if advances else ""
+            badge = '<span class="badge">ADVANCE</span>' if advances else ""
             standing_rows += f"""
-            <tr class="{advance}">
+            <tr class="{row_class}">
                 <td class="pos">{i+1}</td>
-                <td class="team-name">{team}{badge}</td>
+                <td class="team-name">{f'<span class="medal">{medal}</span>' if medal else ''}{team}{badge}</td>
                 <td>{s['P']}</td><td>{s['W']}</td><td>{s['D']}</td><td>{s['L']}</td>
                 <td class="pts">{s['Pts']}</td>
             </tr>"""
@@ -157,6 +183,16 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
             home_bold = "bold" if pred == f"{row['home_team']} win" else ""
             draw_bold = "bold" if pred == "Draw" else ""
             away_bold = "bold" if pred == f"{row['away_team']} win" else ""
+
+            actual_outcome, correct = result_lookup.get((row["date"], row["home_team"], row["away_team"]), (None, None))
+            result_html = ""
+            if actual_outcome is not None:
+                icon = "✓" if correct else "✗"
+                label = "Correct" if correct else "Incorrect"
+                result_html = f"""
+                <div class="result-tag {'result-correct' if correct else 'result-incorrect'}">
+                    {icon} {label} &middot; actual: {actual_outcome}
+                </div>"""
 
             fixture_rows += f"""
             <div class="fixture">
@@ -180,7 +216,8 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
                         <div class="bar-track"><div class="bar away-bar" style="width:{away_pct}%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ {pred}</div>
+                <div class="prediction-tag">⚽ Predicted: {pred}</div>
+                {result_html}
             </div>"""
 
         groups_html += f"""
@@ -404,6 +441,11 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
     color: var(--green);
   }}
 
+  .medal {{
+    margin-right: 0.35rem;
+    font-size: 0.9rem;
+  }}
+
   .badge {{
     display: inline-block;
     margin-left: 0.4rem;
@@ -486,6 +528,64 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
     color: var(--gold);
     font-weight: 600;
     letter-spacing: 0.03em;
+  }}
+
+  .result-tag {{
+    margin-top: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }}
+
+  .result-correct {{
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.3);
+    color: var(--green);
+  }}
+
+  .result-incorrect {{
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.35);
+    color: #f87171;
+  }}
+
+  .accuracy-tracker {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }}
+
+  .accuracy-card {{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+  }}
+
+  .accuracy-label {{
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }}
+
+  .accuracy-value {{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.75rem;
+    letter-spacing: 0.03em;
+    color: var(--gold2);
+    line-height: 1;
+  }}
+
+  .accuracy-detail {{
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--muted);
   }}
 
   footer {{
@@ -685,9 +785,10 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
   <div class="header-eyebrow">ML-Powered Tournament Analysis</div>
   <h1>2026 World Cup Predictions</h1>
   <div class="header-sub">Group Stage &amp; Knockout Stage &middot; XGBoost Model &middot; Elo + Form Features</div>
-  <div class="model-tag">{f"{accuracy:.1f}% GROUP STAGE ACCURACY" if accuracy is not None else "58.3% TEST ACCURACY"} &middot; 72 FIXTURES TRACKED</div>
+  <div class="model-tag">{group_accuracy[0]}/{group_accuracy[1]} GROUP STAGE FIXTURES CORRECT &middot; LIVE TRACKING</div>
 </header>
 <div class="container">
+  {accuracy_html}
   <div class="groups-grid">
     {groups_html}
   </div>

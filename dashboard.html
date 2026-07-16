@@ -199,6 +199,11 @@
     color: var(--green);
   }
 
+  .medal {
+    margin-right: 0.35rem;
+    font-size: 0.9rem;
+  }
+
   .badge {
     display: inline-block;
     margin-left: 0.4rem;
@@ -281,6 +286,64 @@
     color: var(--gold);
     font-weight: 600;
     letter-spacing: 0.03em;
+  }
+
+  .result-tag {
+    margin-top: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .result-correct {
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.3);
+    color: var(--green);
+  }
+
+  .result-incorrect {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.35);
+    color: #f87171;
+  }
+
+  .accuracy-tracker {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .accuracy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+  }
+
+  .accuracy-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .accuracy-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.75rem;
+    letter-spacing: 0.03em;
+    color: var(--gold2);
+    line-height: 1;
+  }
+
+  .accuracy-detail {
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--muted);
   }
 
   footer {
@@ -480,9 +543,22 @@
   <div class="header-eyebrow">ML-Powered Tournament Analysis</div>
   <h1>2026 World Cup Predictions</h1>
   <div class="header-sub">Group Stage &amp; Knockout Stage &middot; XGBoost Model &middot; Elo + Form Features</div>
-  <div class="model-tag">59.7% GROUP STAGE ACCURACY &middot; 72 FIXTURES TRACKED</div>
+  <div class="model-tag">43/72 GROUP STAGE FIXTURES CORRECT &middot; LIVE TRACKING</div>
 </header>
 <div class="container">
+  
+    <div class="accuracy-tracker">
+        <div class="accuracy-card">
+            <div class="accuracy-label">GROUP STAGE ACCURACY</div>
+            <div class="accuracy-value">59.7%</div>
+            <div class="accuracy-detail">43 / 72 correct</div>
+        </div>
+        <div class="accuracy-card">
+            <div class="accuracy-label">KNOCKOUT STAGE ACCURACY</div>
+            <div class="accuracy-value">90.0%</div>
+            <div class="accuracy-detail">27 / 30 correct &middot; updated through the Semifinal Round</div>
+        </div>
+    </div>
   <div class="groups-grid">
     
         <div class="group-card">
@@ -497,27 +573,27 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Mexico<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>Mexico<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>3</td><td>0</td><td>0</td>
                 <td class="pts">9</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">South Korea<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>0</td><td>1</td>
-                <td class="pts">6</td>
+                <td class="team-name"><span class="medal">🥈</span>South Africa<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">3</td>
-                <td class="team-name">Czech Republic</td>
+                <td class="team-name">South Korea</td>
                 <td>3</td><td>1</td><td>0</td><td>2</td>
                 <td class="pts">3</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
-                <td class="team-name">South Africa</td>
-                <td>3</td><td>0</td><td>0</td><td>3</td>
-                <td class="pts">0</td>
+                <td class="team-name">Czech Republic</td>
+                <td>3</td><td>0</td><td>1</td><td>2</td>
+                <td class="pts">1</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -545,7 +621,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:6.5%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Mexico win</div>
+                <div class="prediction-tag">⚽ Predicted: Mexico win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Mexico win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-11</div>
@@ -568,7 +648,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:21.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ South Korea win</div>
+                <div class="prediction-tag">⚽ Predicted: South Korea win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: South Korea win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-18</div>
@@ -591,7 +675,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:20.8%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Czech Republic win</div>
+                <div class="prediction-tag">⚽ Predicted: Czech Republic win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-18</div>
@@ -614,7 +702,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:19.3%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Mexico win</div>
+                <div class="prediction-tag">⚽ Predicted: Mexico win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Mexico win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-24</div>
@@ -637,7 +729,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:61.3%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ South Korea win</div>
+                <div class="prediction-tag">⚽ Predicted: South Korea win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: South Africa win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-24</div>
@@ -660,7 +756,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:13.2%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Mexico win</div>
+                <div class="prediction-tag">⚽ Predicted: Mexico win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Mexico win
+                </div>
             </div>
                 </div>
             </div>
@@ -677,27 +777,27 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Canada<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>3</td><td>0</td><td>0</td>
-                <td class="pts">9</td>
+                <td class="team-name"><span class="medal">🥇</span>Switzerland<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Switzerland<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>0</td><td>1</td>
-                <td class="pts">6</td>
+                <td class="team-name"><span class="medal">🥈</span>Canada<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Bosnia and Herzegovina</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
-                <td class="pts">3</td>
+                <td class="team-name"><span class="medal">🥉</span>Bosnia and Herzegovina<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
                 <td class="team-name">Qatar</td>
-                <td>3</td><td>0</td><td>0</td><td>3</td>
-                <td class="pts">0</td>
+                <td>3</td><td>0</td><td>1</td><td>2</td>
+                <td class="pts">1</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -725,7 +825,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:8.1%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Canada win</div>
+                <div class="prediction-tag">⚽ Predicted: Canada win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-13</div>
@@ -748,7 +852,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:60.8%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Switzerland win</div>
+                <div class="prediction-tag">⚽ Predicted: Switzerland win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-18</div>
@@ -771,7 +879,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:12.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Switzerland win</div>
+                <div class="prediction-tag">⚽ Predicted: Switzerland win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Switzerland win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-18</div>
@@ -794,7 +906,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:6.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Canada win</div>
+                <div class="prediction-tag">⚽ Predicted: Canada win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Canada win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-24</div>
@@ -817,7 +933,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:27.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Bosnia and Herzegovina win</div>
+                <div class="prediction-tag">⚽ Predicted: Bosnia and Herzegovina win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Bosnia and Herzegovina win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-24</div>
@@ -840,7 +960,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:24.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Canada win</div>
+                <div class="prediction-tag">⚽ Predicted: Canada win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Switzerland win
+                </div>
             </div>
                 </div>
             </div>
@@ -857,15 +981,15 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Morocco<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>Brazil<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>2</td><td>1</td><td>0</td>
                 <td class="pts">7</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Brazil<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>1</td><td>2</td><td>0</td>
-                <td class="pts">5</td>
+                <td class="team-name"><span class="medal">🥈</span>Morocco<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
             </tr>
             <tr class="">
                 <td class="pos">3</td>
@@ -876,8 +1000,8 @@
             <tr class="">
                 <td class="pos">4</td>
                 <td class="team-name">Haiti</td>
-                <td>3</td><td>0</td><td>1</td><td>2</td>
-                <td class="pts">1</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -905,7 +1029,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:32.0%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Draw</div>
+                <div class="prediction-tag">⚽ Predicted: Draw</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-13</div>
@@ -928,7 +1056,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:50.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Scotland win</div>
+                <div class="prediction-tag">⚽ Predicted: Scotland win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Scotland win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-19</div>
@@ -951,7 +1083,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:51.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Morocco win</div>
+                <div class="prediction-tag">⚽ Predicted: Morocco win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Morocco win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-19</div>
@@ -974,7 +1110,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:11.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Draw</div>
+                <div class="prediction-tag">⚽ Predicted: Draw</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Brazil win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-24</div>
@@ -997,7 +1137,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:14.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Morocco win</div>
+                <div class="prediction-tag">⚽ Predicted: Morocco win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Morocco win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-24</div>
@@ -1020,7 +1164,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:52.2%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Brazil win</div>
+                <div class="prediction-tag">⚽ Predicted: Brazil win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Brazil win
+                </div>
             </div>
                 </div>
             </div>
@@ -1037,27 +1185,27 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">United States<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>1</td><td>0</td>
-                <td class="pts">7</td>
-            </tr>
-            <tr class="advancing">
-                <td class="pos">2</td>
-                <td class="team-name">Turkey<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>United States<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>2</td><td>0</td><td>1</td>
                 <td class="pts">6</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name"><span class="medal">🥈</span>Australia<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
+            </tr>
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Australia</td>
+                <td class="team-name"><span class="medal">🥉</span>Paraguay<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>1</td><td>1</td><td>1</td>
                 <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
-                <td class="team-name">Paraguay</td>
-                <td>3</td><td>0</td><td>0</td><td>3</td>
-                <td class="pts">0</td>
+                <td class="team-name">Turkey</td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -1085,7 +1233,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:25.3%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ United States win</div>
+                <div class="prediction-tag">⚽ Predicted: United States win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: United States win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-13</div>
@@ -1108,7 +1260,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:36.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Turkey win</div>
+                <div class="prediction-tag">⚽ Predicted: Turkey win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Australia win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-19</div>
@@ -1131,7 +1287,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:27.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Turkey win</div>
+                <div class="prediction-tag">⚽ Predicted: Turkey win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Paraguay win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-19</div>
@@ -1154,7 +1314,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:26.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Draw</div>
+                <div class="prediction-tag">⚽ Predicted: Draw</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: United States win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-25</div>
@@ -1177,7 +1341,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:30.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ United States win</div>
+                <div class="prediction-tag">⚽ Predicted: United States win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Turkey win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-25</div>
@@ -1200,7 +1368,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:44.4%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Australia win</div>
+                <div class="prediction-tag">⚽ Predicted: Australia win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
                 </div>
             </div>
@@ -1217,27 +1389,27 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Ecuador<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>3</td><td>0</td><td>0</td>
-                <td class="pts">9</td>
-            </tr>
-            <tr class="advancing">
-                <td class="pos">2</td>
-                <td class="team-name">Germany<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>Germany<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>2</td><td>0</td><td>1</td>
                 <td class="pts">6</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
+                <td class="pos">2</td>
+                <td class="team-name"><span class="medal">🥈</span>Ivory Coast<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
+            </tr>
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Ivory Coast</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
-                <td class="pts">3</td>
+                <td class="team-name"><span class="medal">🥉</span>Ecuador<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
                 <td class="team-name">Curaçao</td>
-                <td>3</td><td>0</td><td>0</td><td>3</td>
-                <td class="pts">0</td>
+                <td>3</td><td>0</td><td>1</td><td>2</td>
+                <td class="pts">1</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -1265,7 +1437,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:2.8%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Germany win</div>
+                <div class="prediction-tag">⚽ Predicted: Germany win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Germany win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-14</div>
@@ -1288,7 +1464,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:66.8%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Ecuador win</div>
+                <div class="prediction-tag">⚽ Predicted: Ecuador win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Ivory Coast win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-20</div>
@@ -1311,7 +1491,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:11.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Germany win</div>
+                <div class="prediction-tag">⚽ Predicted: Germany win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Germany win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-20</div>
@@ -1334,7 +1518,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:1.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Ecuador win</div>
+                <div class="prediction-tag">⚽ Predicted: Ecuador win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-25</div>
@@ -1357,7 +1545,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:61.4%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Ivory Coast win</div>
+                <div class="prediction-tag">⚽ Predicted: Ivory Coast win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Ivory Coast win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-25</div>
@@ -1380,7 +1572,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:29.2%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Ecuador win</div>
+                <div class="prediction-tag">⚽ Predicted: Ecuador win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Ecuador win
+                </div>
             </div>
                 </div>
             </div>
@@ -1397,21 +1593,21 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Netherlands<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>Netherlands<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>2</td><td>1</td><td>0</td>
                 <td class="pts">7</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Japan<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>1</td><td>0</td>
-                <td class="pts">7</td>
+                <td class="team-name"><span class="medal">🥈</span>Japan<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>2</td><td>0</td>
+                <td class="pts">5</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Sweden</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
-                <td class="pts">3</td>
+                <td class="team-name"><span class="medal">🥉</span>Sweden<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
@@ -1445,7 +1641,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:28.3%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Sweden win</div>
+                <div class="prediction-tag">⚽ Predicted: Sweden win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Sweden win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-14</div>
@@ -1468,7 +1668,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:30.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Draw</div>
+                <div class="prediction-tag">⚽ Predicted: Draw</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-20</div>
@@ -1491,7 +1695,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:7.4%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Netherlands win</div>
+                <div class="prediction-tag">⚽ Predicted: Netherlands win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Netherlands win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-20</div>
@@ -1514,7 +1722,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:59.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Japan win</div>
+                <div class="prediction-tag">⚽ Predicted: Japan win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Japan win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-25</div>
@@ -1537,7 +1749,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:8.1%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Japan win</div>
+                <div class="prediction-tag">⚽ Predicted: Japan win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-25</div>
@@ -1560,7 +1776,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:62.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Netherlands win</div>
+                <div class="prediction-tag">⚽ Predicted: Netherlands win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Netherlands win
+                </div>
             </div>
                 </div>
             </div>
@@ -1577,27 +1797,27 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Belgium<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>1</td><td>0</td>
-                <td class="pts">7</td>
+                <td class="team-name"><span class="medal">🥇</span>Belgium<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>2</td><td>0</td>
+                <td class="pts">5</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Iran<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>1</td><td>0</td>
-                <td class="pts">7</td>
+                <td class="team-name"><span class="medal">🥈</span>Egypt<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>2</td><td>0</td>
+                <td class="pts">5</td>
             </tr>
             <tr class="">
                 <td class="pos">3</td>
-                <td class="team-name">Egypt</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="team-name">Iran</td>
+                <td>3</td><td>0</td><td>3</td><td>0</td>
                 <td class="pts">3</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
                 <td class="team-name">New Zealand</td>
-                <td>3</td><td>0</td><td>0</td><td>3</td>
-                <td class="pts">0</td>
+                <td>3</td><td>0</td><td>1</td><td>2</td>
+                <td class="pts">1</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -1625,7 +1845,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:21.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Belgium win</div>
+                <div class="prediction-tag">⚽ Predicted: Belgium win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-15</div>
@@ -1648,7 +1872,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:18.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Iran win</div>
+                <div class="prediction-tag">⚽ Predicted: Iran win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-21</div>
@@ -1671,7 +1899,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:31.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Draw</div>
+                <div class="prediction-tag">⚽ Predicted: Draw</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-21</div>
@@ -1694,7 +1926,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:44.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Egypt win</div>
+                <div class="prediction-tag">⚽ Predicted: Egypt win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Egypt win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-26</div>
@@ -1717,7 +1953,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:55.0%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Belgium win</div>
+                <div class="prediction-tag">⚽ Predicted: Belgium win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Belgium win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-26</div>
@@ -1740,7 +1980,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:46.5%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Iran win</div>
+                <div class="prediction-tag">⚽ Predicted: Iran win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
                 </div>
             </div>
@@ -1757,27 +2001,27 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Spain<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>3</td><td>0</td><td>0</td>
-                <td class="pts">9</td>
+                <td class="team-name"><span class="medal">🥇</span>Spain<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Uruguay<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>0</td><td>1</td>
-                <td class="pts">6</td>
-            </tr>
-            <tr class="">
-                <td class="pos">3</td>
-                <td class="team-name">Saudi Arabia</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="team-name"><span class="medal">🥈</span>Cape Verde<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>0</td><td>3</td><td>0</td>
                 <td class="pts">3</td>
             </tr>
             <tr class="">
+                <td class="pos">3</td>
+                <td class="team-name">Uruguay</td>
+                <td>3</td><td>0</td><td>2</td><td>1</td>
+                <td class="pts">2</td>
+            </tr>
+            <tr class="">
                 <td class="pos">4</td>
-                <td class="team-name">Cape Verde</td>
-                <td>3</td><td>0</td><td>0</td><td>3</td>
-                <td class="pts">0</td>
+                <td class="team-name">Saudi Arabia</td>
+                <td>3</td><td>0</td><td>2</td><td>1</td>
+                <td class="pts">2</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -1805,7 +2049,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:3.5%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Spain win</div>
+                <div class="prediction-tag">⚽ Predicted: Spain win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-15</div>
@@ -1828,7 +2076,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:54.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Uruguay win</div>
+                <div class="prediction-tag">⚽ Predicted: Uruguay win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-21</div>
@@ -1851,7 +2103,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:2.5%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Spain win</div>
+                <div class="prediction-tag">⚽ Predicted: Spain win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Spain win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-21</div>
@@ -1874,7 +2130,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:11.5%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Uruguay win</div>
+                <div class="prediction-tag">⚽ Predicted: Uruguay win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-26</div>
@@ -1897,7 +2157,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:59.0%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Spain win</div>
+                <div class="prediction-tag">⚽ Predicted: Spain win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Spain win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-26</div>
@@ -1920,7 +2184,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:40.1%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Saudi Arabia win</div>
+                <div class="prediction-tag">⚽ Predicted: Saudi Arabia win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
                 </div>
             </div>
@@ -1937,21 +2205,21 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">France<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>France<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>3</td><td>0</td><td>0</td>
                 <td class="pts">9</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Norway<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>1</td><td>1</td><td>1</td>
-                <td class="pts">4</td>
+                <td class="team-name"><span class="medal">🥈</span>Norway<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>0</td><td>1</td>
+                <td class="pts">6</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Senegal</td>
-                <td>3</td><td>1</td><td>1</td><td>1</td>
-                <td class="pts">4</td>
+                <td class="team-name"><span class="medal">🥉</span>Senegal<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>0</td><td>2</td>
+                <td class="pts">3</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
@@ -1985,7 +2253,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:16.0%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ France win</div>
+                <div class="prediction-tag">⚽ Predicted: France win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: France win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-16</div>
@@ -2008,7 +2280,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:50.4%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Norway win</div>
+                <div class="prediction-tag">⚽ Predicted: Norway win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Norway win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-22</div>
@@ -2031,7 +2307,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:9.2%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ France win</div>
+                <div class="prediction-tag">⚽ Predicted: France win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: France win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-22</div>
@@ -2054,7 +2334,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:34.2%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Draw</div>
+                <div class="prediction-tag">⚽ Predicted: Draw</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Norway win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-26</div>
@@ -2077,7 +2361,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:27.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Senegal win</div>
+                <div class="prediction-tag">⚽ Predicted: Senegal win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Senegal win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-26</div>
@@ -2100,7 +2388,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:47.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ France win</div>
+                <div class="prediction-tag">⚽ Predicted: France win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: France win
+                </div>
             </div>
                 </div>
             </div>
@@ -2117,21 +2409,21 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Argentina<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>Argentina<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>3</td><td>0</td><td>0</td>
                 <td class="pts">9</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Algeria<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>0</td><td>1</td>
-                <td class="pts">6</td>
+                <td class="team-name"><span class="medal">🥈</span>Austria<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Austria</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
-                <td class="pts">3</td>
+                <td class="team-name"><span class="medal">🥉</span>Algeria<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
@@ -2165,7 +2457,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:17.8%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Austria win</div>
+                <div class="prediction-tag">⚽ Predicted: Austria win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Austria win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-16</div>
@@ -2188,7 +2484,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:8.3%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Argentina win</div>
+                <div class="prediction-tag">⚽ Predicted: Argentina win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Argentina win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-22</div>
@@ -2211,7 +2511,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:6.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Argentina win</div>
+                <div class="prediction-tag">⚽ Predicted: Argentina win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Argentina win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-22</div>
@@ -2234,7 +2538,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:48.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Algeria win</div>
+                <div class="prediction-tag">⚽ Predicted: Algeria win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Algeria win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-27</div>
@@ -2257,7 +2565,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:29.6%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Algeria win</div>
+                <div class="prediction-tag">⚽ Predicted: Algeria win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-27</div>
@@ -2280,7 +2592,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:83.0%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Argentina win</div>
+                <div class="prediction-tag">⚽ Predicted: Argentina win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Argentina win
+                </div>
             </div>
                 </div>
             </div>
@@ -2297,27 +2613,27 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">Colombia<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥇</span>Colombia<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>2</td><td>1</td><td>0</td>
                 <td class="pts">7</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Portugal<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>2</td><td>0</td><td>1</td>
-                <td class="pts">6</td>
+                <td class="team-name"><span class="medal">🥈</span>Portugal<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>2</td><td>0</td>
+                <td class="pts">5</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Uzbekistan</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
-                <td class="pts">3</td>
+                <td class="team-name"><span class="medal">🥉</span>DR Congo<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
-                <td class="team-name">DR Congo</td>
-                <td>3</td><td>0</td><td>1</td><td>2</td>
-                <td class="pts">1</td>
+                <td class="team-name">Uzbekistan</td>
+                <td>3</td><td>0</td><td>0</td><td>3</td>
+                <td class="pts">0</td>
             </tr></tbody>
                     </table>
                 </div>
@@ -2345,7 +2661,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:12.5%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Portugal win</div>
+                <div class="prediction-tag">⚽ Predicted: Portugal win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-17</div>
@@ -2368,7 +2688,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:53.2%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Colombia win</div>
+                <div class="prediction-tag">⚽ Predicted: Colombia win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Colombia win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-23</div>
@@ -2391,7 +2715,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:26.5%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Portugal win</div>
+                <div class="prediction-tag">⚽ Predicted: Portugal win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Portugal win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-23</div>
@@ -2414,7 +2742,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:7.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Draw</div>
+                <div class="prediction-tag">⚽ Predicted: Draw</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Colombia win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-27</div>
@@ -2437,7 +2769,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:25.8%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Colombia win</div>
+                <div class="prediction-tag">⚽ Predicted: Colombia win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-27</div>
@@ -2460,7 +2796,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:41.0%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Uzbekistan win</div>
+                <div class="prediction-tag">⚽ Predicted: Uzbekistan win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: DR Congo win
+                </div>
             </div>
                 </div>
             </div>
@@ -2477,25 +2817,25 @@
                         <tbody>
             <tr class="advancing">
                 <td class="pos">1</td>
-                <td class="team-name">England<span class="badge">ADVANCE</span></td>
-                <td>3</td><td>3</td><td>0</td><td>0</td>
-                <td class="pts">9</td>
+                <td class="team-name"><span class="medal">🥇</span>England<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>2</td><td>1</td><td>0</td>
+                <td class="pts">7</td>
             </tr>
             <tr class="advancing">
                 <td class="pos">2</td>
-                <td class="team-name">Croatia<span class="badge">ADVANCE</span></td>
+                <td class="team-name"><span class="medal">🥈</span>Croatia<span class="badge">ADVANCE</span></td>
                 <td>3</td><td>2</td><td>0</td><td>1</td>
                 <td class="pts">6</td>
             </tr>
-            <tr class="">
+            <tr class="advancing">
                 <td class="pos">3</td>
-                <td class="team-name">Panama</td>
-                <td>3</td><td>1</td><td>0</td><td>2</td>
-                <td class="pts">3</td>
+                <td class="team-name"><span class="medal">🥉</span>Ghana<span class="badge">ADVANCE</span></td>
+                <td>3</td><td>1</td><td>1</td><td>1</td>
+                <td class="pts">4</td>
             </tr>
             <tr class="">
                 <td class="pos">4</td>
-                <td class="team-name">Ghana</td>
+                <td class="team-name">Panama</td>
                 <td>3</td><td>0</td><td>0</td><td>3</td>
                 <td class="pts">0</td>
             </tr></tbody>
@@ -2525,7 +2865,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:20.0%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ England win</div>
+                <div class="prediction-tag">⚽ Predicted: England win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: England win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-17</div>
@@ -2548,7 +2892,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:53.1%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Panama win</div>
+                <div class="prediction-tag">⚽ Predicted: Panama win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Ghana win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-23</div>
@@ -2571,7 +2919,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:3.4%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ England win</div>
+                <div class="prediction-tag">⚽ Predicted: England win</div>
+                
+                <div class="result-tag result-incorrect">
+                    ✗ Incorrect &middot; actual: Draw
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-23</div>
@@ -2594,7 +2946,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:60.2%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Croatia win</div>
+                <div class="prediction-tag">⚽ Predicted: Croatia win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Croatia win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-27</div>
@@ -2617,7 +2973,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:66.9%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ England win</div>
+                <div class="prediction-tag">⚽ Predicted: England win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: England win
+                </div>
             </div>
             <div class="fixture">
                 <div class="fixture-date">2026-06-27</div>
@@ -2640,7 +3000,11 @@
                         <div class="bar-track"><div class="bar away-bar" style="width:9.7%"></div></div>
                     </div>
                 </div>
-                <div class="prediction-tag">⚽ Croatia win</div>
+                <div class="prediction-tag">⚽ Predicted: Croatia win</div>
+                
+                <div class="result-tag result-correct">
+                    ✓ Correct &middot; actual: Croatia win
+                </div>
             </div>
                 </div>
             </div>
@@ -2665,6 +3029,10 @@
             <span class="matchup-pct">66.6%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Canada advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-06-29</div>
@@ -2679,6 +3047,10 @@
             <span class="matchup-pct">43.5%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Brazil advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-06-29</div>
@@ -2693,6 +3065,10 @@
             <span class="matchup-pct">35.8%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-incorrect">
+            ✗ Incorrect &middot; actual: Paraguay advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-06-29</div>
@@ -2707,6 +3083,10 @@
             <span class="matchup-pct">62.2%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Morocco advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-06-30</div>
@@ -2721,6 +3101,10 @@
             <span class="matchup-pct">62.4%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Norway advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-06-30</div>
@@ -2735,6 +3119,10 @@
             <span class="matchup-pct">22.2%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: France advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-06-30</div>
@@ -2749,6 +3137,10 @@
             <span class="matchup-pct">45.8%</span>
         </div>
         <div class="matchup-confidence conf-low">Low confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Mexico advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-01</div>
@@ -2763,6 +3155,10 @@
             <span class="matchup-pct">11.8%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: England advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-01</div>
@@ -2777,6 +3173,10 @@
             <span class="matchup-pct">44.0%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Belgium advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-01</div>
@@ -2791,6 +3191,10 @@
             <span class="matchup-pct">18.0%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: United States advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-02</div>
@@ -2805,6 +3209,10 @@
             <span class="matchup-pct">10.8%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Spain advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-02</div>
@@ -2819,6 +3227,10 @@
             <span class="matchup-pct">28.1%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Portugal advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-02</div>
@@ -2833,6 +3245,10 @@
             <span class="matchup-pct">41.7%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Switzerland advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-03</div>
@@ -2847,6 +3263,10 @@
             <span class="matchup-pct">41.0%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-incorrect">
+            ✗ Incorrect &middot; actual: Egypt advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-03</div>
@@ -2861,6 +3281,10 @@
             <span class="matchup-pct">4.9%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Argentina advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-03</div>
@@ -2875,6 +3299,10 @@
             <span class="matchup-pct">13.8%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Colombia advanced
+        </div>
     </div></div>
         </div>
         <div class="bracket-round">
@@ -2893,6 +3321,10 @@
             <span class="matchup-pct">79.0%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Morocco advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-04</div>
@@ -2907,6 +3339,10 @@
             <span class="matchup-pct">87.5%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: France advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-05</div>
@@ -2921,6 +3357,10 @@
             <span class="matchup-pct">37.0%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-incorrect">
+            ✗ Incorrect &middot; actual: Norway advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-05</div>
@@ -2935,6 +3375,10 @@
             <span class="matchup-pct">60.2%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: England advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-06</div>
@@ -2949,6 +3393,10 @@
             <span class="matchup-pct">83.9%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Spain advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-06</div>
@@ -2963,6 +3411,10 @@
             <span class="matchup-pct">61.1%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Belgium advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-07</div>
@@ -2977,6 +3429,10 @@
             <span class="matchup-pct">8.6%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Argentina advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-07</div>
@@ -2991,6 +3447,10 @@
             <span class="matchup-pct">47.4%</span>
         </div>
         <div class="matchup-confidence conf-low">Low confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Switzerland advanced
+        </div>
     </div></div>
         </div>
         <div class="bracket-round">
@@ -3009,6 +3469,10 @@
             <span class="matchup-pct">34.3%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: France advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-10</div>
@@ -3023,6 +3487,10 @@
             <span class="matchup-pct">17.4%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Spain advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-11</div>
@@ -3037,6 +3505,10 @@
             <span class="matchup-pct">77.6%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: England advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-11</div>
@@ -3051,6 +3523,10 @@
             <span class="matchup-pct">21.4%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Argentina advanced
+        </div>
     </div></div>
         </div>
         <div class="bracket-round">
@@ -3069,6 +3545,10 @@
             <span class="matchup-pct">43.0%</span>
         </div>
         <div class="matchup-confidence conf-medium">Medium confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Spain advanced
+        </div>
     </div>
     <div class="matchup-card">
         <div class="matchup-date">2026-07-15</div>
@@ -3083,6 +3563,10 @@
             <span class="matchup-pct">81.2%</span>
         </div>
         <div class="matchup-confidence conf-high">High confidence</div>
+        
+        <div class="result-tag result-correct">
+            ✓ Correct &middot; actual: Argentina advanced
+        </div>
     </div></div>
         </div>
   
