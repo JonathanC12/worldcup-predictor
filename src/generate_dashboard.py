@@ -14,6 +14,8 @@ KNOCKOUT_ROUND_LABELS = {
 
 MEDALS = {0: "🥇", 1: "🥈", 2: "🥉"}
 
+FINAL_ACTUAL_SCORE = "1-0"  # Spain 1, Argentina 0 (2026-07-19)
+
 def build_matchup_card(row) -> str:
     """Render one knockout fixture as a matchup card with advance-probability bars."""
     home, away = row["home_team"], row["away_team"]
@@ -82,6 +84,18 @@ def build_final_html(knockout_df: pd.DataFrame) -> str:
     away_pct = float(str(row["away_advance%"]).replace("%", ""))
     home_wins = row["predicted_outcome"] == f"{home} advance"
 
+    actual_outcome = row.get("actual_outcome")
+    has_actual = pd.notna(actual_outcome)
+    result_html = ""
+    if has_actual:
+        correct = bool(row["correct"])
+        icon = "✓" if correct else "✗"
+        label = "Correct" if correct else "Incorrect"
+        result_html = f"""
+        <div class="result-tag {'result-correct' if correct else 'result-incorrect'}">
+            {icon} {label} &middot; final result: {home} {FINAL_ACTUAL_SCORE} {away}
+        </div>"""
+
     return f"""
     <div class="final-spotlight">
         <div class="final-eyebrow">2026 FIFA WORLD CUP FINAL &middot; {row['date']}</div>
@@ -101,15 +115,19 @@ def build_final_html(knockout_df: pd.DataFrame) -> str:
             <div class="final-bar-away" style="width:{away_pct}%"></div>
         </div>
         <div class="final-prediction">🏆 Predicted champion: <strong>{row['predicted_outcome'].replace(' advance', '')}</strong> &middot; {row['confidence']} confidence &middot; {row['extra_time%']} extra-time probability</div>
+        {result_html}
     </div>"""
 
 
 def build_accuracy_tracker_html(group_accuracy: tuple, knockout_accuracy: tuple) -> str:
-    """Two stat cards summarizing prediction accuracy so far."""
+    """Three stat cards summarizing final prediction accuracy: group stage, knockout stage, and combined."""
     group_correct, group_total = group_accuracy
     knockout_correct, knockout_total = knockout_accuracy
+    overall_correct = group_correct + knockout_correct
+    overall_total = group_total + knockout_total
     group_pct = group_correct / group_total * 100 if group_total else 0.0
     knockout_pct = knockout_correct / knockout_total * 100 if knockout_total else 0.0
+    overall_pct = overall_correct / overall_total * 100 if overall_total else 0.0
 
     return f"""
     <div class="accuracy-tracker">
@@ -121,7 +139,12 @@ def build_accuracy_tracker_html(group_accuracy: tuple, knockout_accuracy: tuple)
         <div class="accuracy-card">
             <div class="accuracy-label">KNOCKOUT STAGE ACCURACY</div>
             <div class="accuracy-value">{knockout_pct:.1f}%</div>
-            <div class="accuracy-detail">{knockout_correct} / {knockout_total} correct &middot; updated through the Semifinal Round</div>
+            <div class="accuracy-detail">{knockout_correct} / {knockout_total} correct &middot; Full Tournament</div>
+        </div>
+        <div class="accuracy-card">
+            <div class="accuracy-label">OVERALL TOURNAMENT ACCURACY</div>
+            <div class="accuracy-value">{overall_pct:.1f}%</div>
+            <div class="accuracy-detail">{overall_correct} / {overall_total} correct</div>
         </div>
     </div>"""
 
@@ -785,7 +808,7 @@ def generate_dashboard(predictions_csv: str, output_path: str, knockout_csv: str
   <div class="header-eyebrow">ML-Powered Tournament Analysis</div>
   <h1>2026 World Cup Predictions</h1>
   <div class="header-sub">Group Stage &amp; Knockout Stage &middot; XGBoost Model &middot; Elo + Form Features</div>
-  <div class="model-tag">{group_accuracy[0]}/{group_accuracy[1]} GROUP STAGE FIXTURES CORRECT &middot; LIVE TRACKING</div>
+  <div class="model-tag">{group_accuracy[0]}/{group_accuracy[1]} GROUP STAGE FIXTURES CORRECT &middot; COMPLETE TOURNAMENT PREDICTIONS</div>
 </header>
 <div class="container">
   {accuracy_html}

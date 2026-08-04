@@ -1,6 +1,6 @@
 # World Cup 2026 Match Predictor
 
-A full end-to-end machine learning project that predicts match outcomes for the 2026 FIFA World Cup. The project covers data ingestion, feature engineering, model training with experiment tracking, a REST API for live predictions, group stage and knockout stage prediction pipelines, a live results tracker, and an interactive HTML dashboard to visualize results — all running entirely on your local machine.
+A full end-to-end machine learning project that predicts match outcomes for the 2026 FIFA World Cup. The project covers data ingestion, feature engineering, model training with experiment tracking, a REST API for live predictions, group stage and knockout stage prediction pipelines, a results tracker, and an interactive HTML dashboard to visualize results — all running entirely on your local machine.
 
 ---
 
@@ -24,7 +24,7 @@ This project was built to demonstrate production-oriented data science skills, i
 
 The model predicts one of three outcomes for any international football match: home win, draw, or away win. It is trained on over 45,000 historical international match results and uses Elo ratings and rolling team form as its core features.
 
-The group stage is now complete. All 72 group stage fixtures have been scored against their actual results, and `src/track_results.py` maintains a running accuracy log. The knockout stage predictor (`src/predict_knockout.py`) carries Elo and form ratings forward through each completed round — Round of 32, Round of 16, quarterfinals, and semifinals — and predicts advancement probabilities for the final, culminating in a Spain vs. Argentina final prediction. The HTML dashboard visualizes the full tournament: group standings, knockout bracket predictions round by round, and a spotlight section for the final.
+The 2026 FIFA World Cup is complete. All 72 group stage fixtures have been scored against their actual results, and `src/track_results.py` maintains the full accuracy log. The knockout stage predictor (`src/predict_knockout.py`) carried Elo and form ratings forward through every round — Round of 32, Round of 16, quarterfinals, semifinals, and the final — predicting advancement probabilities at each stage, correctly picking Spain to beat Argentina in the final (Spain won 1-0). The HTML dashboard visualizes the full tournament: group standings, knockout bracket predictions round by round, and a spotlight section for the final showing the confirmed result.
 
 ---
 
@@ -304,9 +304,11 @@ XGBoost with default hyperparameters was selected as the final model and registe
 
 ## Results
 
+With the tournament complete, every prediction the model made — 72 group stage fixtures plus 31 knockout matches — has been scored against its actual outcome.
+
 ### Group Stage
 
-With the group stage complete, `src/track_results.py` scores every one of the 72 fixtures against its actual outcome:
+`src/track_results.py` scores every one of the 72 fixtures against its actual outcome:
 
 - **Correct predictions:** 43 / 72
 - **Overall accuracy:** 59.7%
@@ -315,12 +317,16 @@ This is in line with the model's held-out test accuracy (58.3%), suggesting the 
 
 ### Knockout Stage
 
-`data/knockout_predictions.csv` holds advancement probabilities for every knockout round played so far (Round of 32 through the semifinals) plus the final, each scored against the actual advancing team (`src/predict_knockout.knockout_accuracy_so_far()`):
+`data/knockout_predictions.csv` holds advancement probabilities for every knockout round, Round of 32 through the final, each scored against the actual advancing team (`src/predict_knockout.knockout_accuracy_so_far()`):
 
-- **Correct predictions:** 27 / 30
-- **Overall accuracy (updated through the semifinal round):** 90.0%
+- **Correct predictions:** 28 / 31
+- **Overall accuracy:** 90.3%
 
-The 3 misses were all matches the model favored the team that ended up losing on penalties or in a late upset (Germany vs. Paraguay, Australia vs. Egypt, and Brazil vs. Norway) — a reminder that Elo/form alone can't capture shootout variance or one-off giant-killing performances. For the final, Spain enters with an Elo rating of roughly 2100 and Argentina roughly 2083 — both updated from their pre-tournament baselines using their actual group stage and knockout results — giving Spain a narrow ~51/49 edge to win the tournament. See `dashboard.html` for the full visual breakdown, including per-match correct/incorrect indicators and the final's spotlight prediction.
+The misses were matches the model favored the team that ended up losing on penalties or in a late upset (Germany vs. Paraguay, Australia vs. Egypt, and Brazil vs. Norway) — a reminder that Elo/form alone can't capture shootout variance or one-off giant-killing performances. For the final, the model gave Spain a narrow ~51/49 edge over Argentina based on Elo ratings rolled forward through the entire tournament — Spain went on to win 1-0, confirming the model's predicted outcome. See `dashboard.html` for the full visual breakdown, including per-match correct/incorrect indicators and the final's spotlight result.
+
+### Overall Tournament Accuracy
+
+Combining the group stage and knockout stage, the model correctly predicted **71 / 103** matches across the entire 2026 World Cup, for an overall accuracy of **68.9%**.
 
 ---
 

@@ -110,7 +110,7 @@ SEMIFINAL_RESULTS = [
 ]
 
 # Round name -> its actual results, for scoring predictions against reality.
-# The final has no entry here since it hasn't been played yet.
+# The final's entry is added below once FINAL_RESULTS is defined.
 ROUND_ACTUAL_RESULTS = {
     "round_of_32": ROUND_OF_32_RESULTS,
     "round_of_16": ROUND_OF_16_RESULTS,
@@ -122,6 +122,12 @@ ROUND_ACTUAL_RESULTS = {
 FINAL = [
     {"date": "2026-07-19", "home_team": "Spain", "away_team": "Argentina"},
 ]
+
+FINAL_RESULTS = [
+    {"home_team": "Spain", "away_team": "Argentina", "home_score": 1, "away_score": 0, "winner": "Spain"},
+]
+
+ROUND_ACTUAL_RESULTS["final"] = FINAL_RESULTS
 
 # Each round is predicted using Elo/form built up from every match completed
 # *before* it. Rerun with --round <name> once the previous round's fixtures
@@ -209,7 +215,7 @@ def predict_knockout_fixture(fixture: dict, elo_ratings: dict, form_ratings: dic
 def attach_actual_outcomes(round_name: str, results_df: pd.DataFrame) -> pd.DataFrame:
     """
     Score predictions against reality for rounds that have actually been
-    played. The final has no actual result yet, so its rows are left blank.
+    played. Rounds with no entry in ROUND_ACTUAL_RESULTS are left blank.
     """
     results_df = results_df.copy()
     actual_results = ROUND_ACTUAL_RESULTS.get(round_name)
@@ -231,12 +237,11 @@ def attach_actual_outcomes(round_name: str, results_df: pd.DataFrame) -> pd.Data
 
 def knockout_accuracy_so_far(csv_path: str = "data/knockout_predictions.csv") -> tuple:
     """
-    Overall knockout-stage prediction accuracy across every completed round
-    (Round of 32 through the semifinals). Excludes the final, which hasn't
-    been played yet. Returns (correct, total).
+    Overall knockout-stage prediction accuracy across every round that has
+    been played and scored, Round of 32 through the final. Returns (correct, total).
     """
     df = pd.read_csv(csv_path)
-    completed = df[df["round"] != "final"]
+    completed = df[df["correct"].notna()]
     correct = int(completed["correct"].sum())
     total = len(completed)
     return correct, total
