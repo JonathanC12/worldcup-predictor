@@ -328,6 +328,3 @@ The misses were matches the model favored the team that ended up losing on penal
 Combining the group stage and knockout stage, the model correctly predicted **71 / 103** matches across the entire 2026 World Cup, for an overall accuracy of **68.9%**.
 
 ---
-### Streamlit Prediction Interface
-
-A lightweight Streamlit app will be added to allow interactive predictions: select any two international teams, adjust their Elo and form values, and get an instant probability breakdown. This serves as a more accessible demo than the raw API and is easy to showcase in interviews or share with others.
