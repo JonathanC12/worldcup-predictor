@@ -14,7 +14,6 @@ A full end-to-end machine learning project that predicts match outcomes for the 
 - [How to Run](#how-to-run)
 - [Model and Features](#model-and-features)
 - [Results](#results)
-- [Next Steps](#next-steps)
 
 ---
 
